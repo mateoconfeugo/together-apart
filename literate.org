@@ -1,0 +1,320 @@
+* TODO Summary
+* DONE Exception/Error handling
+** DONE Network/connectivity
+* DONE Configuration
+* DONE Environment Variables
+* TODO Testing
+#+BEGIN_SRC perl
+use Audition::WebService;
+use Digest::SHA  qw(sha1);
+use Mojo::JSON qw(decode_json encode_json);
+use Test::More;
+use Test::Mojo;
+
+
+use FindBin;
+#require "$FindBin::Bin/../lib";
+use lib "/home/mburns/projects/bb/shiftboard/Audition-WebService/lib";
+
+# Some hash
+my $test_input = "split me";
+my $want = { 'even' => ['p', 'i', ' ', 'e'], 'odd'  => ['s', 'l', 't', 'm']};
+
+# Test the splitting up of string
+my $test_output = Audition::WebService::split_elements($test_input);
+my $test_result = Audition::WebService::join_elements($test_output->{'odd'}, $test_output->{'even'});
+is($test_result, $test_input, 'Split and then rejoin');
+
+my $t = Test::Mojo->new;
+
+# Test invalid authentication.
+my $url = $t->ua->server->url->userinfo('bad:terrible')->path('/split');
+$t->post_ok($url => json => $test_data)->status_is(401);
+$url = $t->ua->server->url->userinfo('bad:terrible')->path('/join');
+$t->post_ok($url => json  => $want)->status_is(401);
+
+# Test with valid signature and credentials
+my $test_data = {'string' => $test_input};
+my $good_signature = sha1($test_input);
+$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
+$url->query({signature => $good_signature});
+$t->post_ok($url => json => $test_data)->status_is(200);
+
+my $good_signature = sha1(encode_json($want));
+$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
+$url->query({signature => $good_signature});
+$t->post_ok($url => json => $want)->status_is(200);
+
+# Test for missing signature
+my $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
+$t->post_ok($url => json => $test_data)->status_is(403);
+$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
+$t->post_ok($url => json => $test_data)->status_is(403);
+
+# Test for tampered signature
+my $bad_signature = sha1($test_input . "corruption");
+$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
+$url->query({signature => $bad_signature});
+$t->post_ok($url => json => $test_data)->status_is(403);
+
+$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
+$url->query({signature => $bad_signature});
+$t->post_ok($url => json => $want)->status_is(403);
+
+
+# Test with valid signature
+my $good_signature = sha1($test_input);
+$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
+$url->query({signature => $good_signature});
+$t->post_ok($url => json)->status_is(200);
+
+$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
+$url->query({signature => $good_signature});
+$t->post_ok($url => json)->status_is(200);
+
+done_testing();
+
+__END__
+#+END_SRC
+* DONE Golf - (eliminate extra code)
+* TODO System Integration
+** DONE Monitoring
+#+BEGIN_SRC perl
+use strict;
+use warnings;
+use Riemann::Client;
+use sigtrap qw/handler signal_handler normal-signals/;
+
+sub handler {   # 1st argument is signal name
+	my($sig) = @_;
+	print "Caught a SIG$sig--shutting down\n";
+	close(LOG);
+	exit(0);
+	}
+
+sub activate_monitor_signal {
+    my $r = Riemann::Client->new(
+        host => 'localhost',
+        port => 5555,
+    );
+    $r->send({service => 'api_metrics', metric => 2.5});
+
+    $r->send({
+        host    => Net::Domain::hostfqdn() || 'api',
+        service => 'partition_reduction',
+        state   => 'active',
+        metric  => 1,
+        time    => time() - 10, # defaults to time()
+        description => '1 api server actively reporting data from application.',
+    });
+    my $res = $r->query('true');     # Get all the states from the server
+    $res = $r->query('state = "active"');
+}
+
+$SIG{'INT'}  = \&activate_monitor_signal;
+$SIG{'QUIT'} = \&handler;
+
+
+    # host and port are optional
+#+END_SRC
+** DONE Logging
+** DONE Framework Utilization
+* DONE Documentation
+* Dependencies
+* Application Logic
+** Application functionality odd -even
+** Basic Authentication using webservice
+** Application functionality lastResult
+** Application Functionality: return 401 on unsuccessful auth
+** Application Functionality: return 403 on invalid sha1
+** Application Functionality: return 422 on missing parameters
+* Code
+#+BEGIN_SRC perl
+package Audition::WebService;
+use strict;
+use warnings;
+use Digest::SHA qw(sha1);
+use List::MoreUtils qw(zip);
+use Mojolicious::Lite;
+use Mojo::URL;
+#use Mojo::UserAgent;
+use Mojo::Util qw(secure_compare);
+
+plugin 'Config';
+
+sub combine {
+    my ($odd, $even) = @_;
+    return undef unless scalar @$odd > 0 && scalar @$even > 0;
+    return join '', @zip(@$odd, @$even);
+}
+
+sub partition {
+    my @array = split('', $_[0]);
+    return undef unless scalar @array > 0;
+    my @odd = map {"$_"} @array[grep {!($_ & 1)} 0..$#array]; # bitwise AND array position select odd
+    my @even = map {"$_"} @array[grep {($_ & 1)} 0..$#array]; # invert logic to take even
+    return {even => \@even, odd => \@odd};
+}
+
+under(sub { # Authentication
+    my $c = shift;
+    my ($username, $password) = split(':',  $c->req->url->to_abs->userinfo);
+    $c->ua->get(Mojo::URL->new($ENV{"$name_auth_url"} || app->config('auth_url'))
+                ->query({username=>$username, password=>$password})
+                => {Accept=>'application/json'})->res == 200
+                ? return 1 : return $c->render(json=>{message=>"Invalid"})->rendered(401);
+      }
+    );
+
+group { # Valid API Requirement Assertions
+    under sub {
+        my $c = shift;
+        my $signature = $c->param('signature') || undef;
+        my $string =  $c->req->json->{string} || undef;
+        return $c->render(json=>{message=>"Parameter required)"})->rendered(422) unless $string;
+        return $c->render(json=>{message=>"Checksum failure"})->rendered(403) unless $signature && ($signature eq sha1($string));
+    };
+    post '/split' => sub {
+        my $c  = shift;
+        my $odds_n_evens = partition($c->req->json->{string}) || undef;
+        return $c->render(json=>{message=>"Parameter Invalid"})->rendered(422) unless $odds_n_evens;
+        $c->session('returned_last'=>$odds_n_evens);
+        return $c->render(json=>$odds_n_evens)->rendered(200);
+    };
+    post '/join' => sub {
+        my $c  = shift;
+        my ($odd, $even) =  @{$c->req->json}{qw(odd even)} || undef;
+        my $joined = combine($odd, $even);
+        return $c->render(json=>{message=>"Parameter required"})->rendered(422) unless $joined;
+        $c->session('returned_last' => $joined);
+        return $c->render(json => $joined)->rendered(200);
+    };
+};
+
+get '/lastResponse' => sub {
+    my $c = shift;
+    $c->render(json=>$c->session('returned_last')) || undef;
+};
+
+any '/' => sub { # Main login action
+    my $c = shift;
+    my $user = $c->param('user') || '';
+    my $pass = $c->param('pass') || '';
+    return $c->render unless $c->users->check($user, $pass);
+
+    $c->session(user => $user);
+    $c->flash(message => 'authenticated');
+    $c->redirect_to('protected');
+} => 'index';
+
+group { # logged in user actions
+    under sub {
+        my $c = shift;
+        return 1 if $c->session('user')->redirect_to('index');
+        return undef;
+    };
+    get '/protected';
+};
+
+get '/logout' => sub { # Logout action
+    my $c = shift;
+    $c->session(expires => 1);
+    $c->redirect_to('index');
+};
+
+
+sub run {
+    my ($ctx) = shift || {};
+    my $name = app->config('name');
+
+    my $initial_default_state = {
+        register=>$ENV{"$name_register_url"} || app->config('register_url'),
+        auth=>$ENV{"$name_auth_url"} || app->config('auth_url'),
+        app_name=>$name,
+        status=>'stopped',
+        cfgs=>app->config
+    };
+
+    my $closed_lambda = sub {
+        my $s = shift || $intial_default_state_;
+        return sub {
+            $s->{status=>'start'};
+            app->log->debug("starting $name");
+            get '/'=>'with_config';
+            $state_ctx->{status=>'running'};
+            return {app=>app->start, state=>$s};
+        };
+    }
+
+    my $run_state = $closed_lambda->($default_state)->($ctx);
+
+}
+
+run() unless caller();
+1;
+
+__DATA__
+@@ with_config.html.ep
+<!DOCTYPE html>
+<html>
+  <head><title><%= config 'name' %></title></head>
+  <body>Welcome to <%= config 'name' %></body>
+</html>
+
+__END__
+
+
+
+#!/usr/bin/env perl
+use Mojolicious::Lite;
+
+use lib 'lib';
+use Audition::WebService;
+# Make signed cookies tamper resistant
+app->secrets([$ENV{APP_COOKIE_SIGNING_KEY} || 'DeletedCodeIsDebuggedCode']);
+helper users => sub { state $users = Audition::WebService::Users->new };
+
+
+
+
+sub is_digestable {
+    my $args = shift;
+    my ($sha, $data)  = @{$args}{qw(sha data)};
+    return undef unless $sha && $data;
+
+    $sha eq sha1($data) ? return 1 : return 0;
+}
+
+sub authenticate {
+    my $args = shift;
+    my ($c, $url, $username, $password)  = @{$args}{qw(ctx url username password)};
+    return undef unless $username && $password;
+
+    my $json = try {
+        $c->ua->get($url)->result->json;
+    } catch {
+        warn "caught error: $_";
+    };
+    return secure_compare $c->req->url->to_abs->userinfo, "$username:$password";
+}
+
+sub is_authenticated {
+    my $args = shift;
+    my ($c, $url, $username, $password)  = @{$args}{qw(ctx url username password)};
+    return undef unless $username && $password;
+
+    my $json = $c->ua->get($url)->result->json;
+    return secure_compare $c->req->url->to_abs->userinfo, "$username:$password";
+}
+
+
+get '/' => sub {
+    my $c = shift;
+    if is_authenticated({ctx =>$c, url=>'', username=>$username, password=>$password}) {
+        return $c->render(text => 'Welcome priveledged one!');
+    }
+  $c->res->headers->www_authenticate('Basic');
+  $c->render(text => 'Halt who goes there!', status => 401);
+};
+
+#+END_SRC
