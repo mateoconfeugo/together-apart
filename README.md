@@ -3,39 +3,39 @@
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#orgheadline1">1. Program Descriptions</a></li>
-<li><a href="#orgheadline2">2. <span class="done DONE">DONE</span> Usage</a></li>
-<li><a href="#orgheadline3">3. <span class="done DONE">DONE</span> Summary</a></li>
-<li><a href="#orgheadline15">4. <span class="done DONE">DONE</span> Application specification</a>
+<li><a href="#orgheadline2">2. Usage</a></li>
+<li><a href="#orgheadline3">3. Summary</a></li>
+<li><a href="#orgheadline15">4. Application specification</a>
 <ul>
-<li><a href="#orgheadline4">4.1. <span class="done DONE">DONE</span> General Requirements</a></li>
-<li><a href="#orgheadline5">4.2. <span class="done DONE">DONE</span> API Endpoint Function Requirements</a></li>
-<li><a href="#orgheadline7">4.3. <span class="done DONE">DONE</span> F1 - Split string into even and odd character arrays, Assume first character 1, is odd</a>
+<li><a href="#orgheadline4">4.1. General Requirements</a></li>
+<li><a href="#orgheadline5">4.2. API Endpoint Function Requirements</a></li>
+<li><a href="#orgheadline7">4.3. F1 - Split string into even and odd character arrays, Assume first character 1, is odd</a>
 <ul>
-<li><a href="#orgheadline6">4.3.1. <span class="done DONE">DONE</span> Code</a></li>
+<li><a href="#orgheadline6">4.3.1. Code</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline9">4.4. <span class="done DONE">DONE</span> F2 - join undo split</a>
+<li><a href="#orgheadline9">4.4. F2 - join undo split</a>
 <ul>
-<li><a href="#orgheadline8">4.4.1. <span class="done DONE">DONE</span> Code</a></li>
+<li><a href="#orgheadline8">4.4.1. Code</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline12">4.5. <span class="done DONE">DONE</span> F3 - Last result</a>
+<li><a href="#orgheadline12">4.5. F3 - Last result</a>
 <ul>
-<li><a href="#orgheadline10">4.5.1. <span class="done DONE">DONE</span> Test</a></li>
-<li><a href="#orgheadline11">4.5.2. <span class="done DONE">DONE</span> Code</a></li>
+<li><a href="#orgheadline10">4.5.1. Test</a></li>
+<li><a href="#orgheadline11">4.5.2. Code</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline13">4.6. <span class="done DONE">DONE</span> API Tests</a></li>
-<li><a href="#orgheadline14">4.7. <span class="done DONE">DONE</span> G1</a></li>
+<li><a href="#orgheadline13">4.6. API Tests</a></li>
+<li><a href="#orgheadline14">4.7. G1</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline17">5. <span class="done DONE">DONE</span> Dev Tools</a>
+<li><a href="#orgheadline17">5. Dev Tools</a>
 <ul>
-<li><a href="#orgheadline16">5.1. <span class="done DONE">DONE</span> dependencies</a></li>
+<li><a href="#orgheadline16">5.1. dependencies</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline18">6. <span class="done DONE">DONE</span> Configuration</a></li>
-<li><a href="#orgheadline29">7. <span class="done DONE">DONE</span> Application  Logic</a>
+<li><a href="#orgheadline18">6. Configuration</a></li>
+<li><a href="#orgheadline29">7. Application  Logic</a>
 <ul>
 <li><a href="#orgheadline19">7.1. F1</a></li>
 <li><a href="#orgheadline20">7.2. F2</a></li>
@@ -51,24 +51,24 @@
 <li><a href="#orgheadline25">7.5.1. Error Codes</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline27">7.6. <span class="done DONE">DONE</span> Access Management</a></li>
-<li><a href="#orgheadline28">7.7. <span class="done DONE">DONE</span> Application Code</a></li>
+<li><a href="#orgheadline27">7.6. Access Management</a></li>
+<li><a href="#orgheadline28">7.7. Application Code</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline33">8. <span class="done DONE">DONE</span> System Integration</a>
+<li><a href="#orgheadline33">8. System Integration</a>
 <ul>
-<li><a href="#orgheadline30">8.1. <span class="done DONE">DONE</span> Systemd</a></li>
-<li><a href="#orgheadline32">8.2. <span class="done DONE">DONE</span> Monitoring</a>
+<li><a href="#orgheadline30">8.1. Systemd</a></li>
+<li><a href="#orgheadline32">8.2. Monitoring</a>
 <ul>
 <li><a href="#orgheadline31">8.2.1. Toggle</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline34">9. <span class="done DONE">DONE</span> Environment Variables</a></li>
-<li><a href="#orgheadline35">10. <span class="done DONE">DONE</span> Test Suite</a></li>
-<li><a href="#orgheadline36">11. <span class="done DONE">DONE</span> Build</a></li>
-<li><a href="#orgheadline42">12. <span class="done DONE">DONE</span> Provision</a>
+<li><a href="#orgheadline34">9. Environment Variables</a></li>
+<li><a href="#orgheadline35">10. Test Suite</a></li>
+<li><a href="#orgheadline36">11. Build</a></li>
+<li><a href="#orgheadline42">12. Provision</a>
 <ul>
 <li><a href="#orgheadline37">12.1. <span class="todo TODO">TODO</span> Appliance (App + Packer Image)</a></li>
 <li><a href="#orgheadline38">12.2. <span class="todo TODO">TODO</span> Docker Image</a></li>
@@ -77,12 +77,12 @@
 <li><a href="#orgheadline41">12.5. <span class="todo TODO">TODO</span> Reverse Proxy</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline44">13. <span class="done DONE">DONE</span> Release</a>
+<li><a href="#orgheadline44">13. Release</a>
 <ul>
-<li><a href="#orgheadline43">13.1. <span class="done DONE">DONE</span> Push</a></li>
+<li><a href="#orgheadline43">13.1. Push</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline53">14. <span class="done DONE">DONE</span> Deployment</a>
+<li><a href="#orgheadline53">14. Deployment</a>
 <ul>
 <li><a href="#orgheadline52">14.1. <span class="todo TODO">TODO</span> Package</a>
 <ul>
@@ -118,12 +118,12 @@
 
 # Program Descriptions<a id="orgheadline1"></a>
 
-# DONE Usage<a id="orgheadline2"></a>
+# Usage<a id="orgheadline2"></a>
 
 This application provides a simple REST inspired service to divide a character string into odd and
 even arrays and then join the arrays back into the original charter string.
 
-# DONE Summary<a id="orgheadline3"></a>
+# Summary<a id="orgheadline3"></a>
 
     # INITIALIZATION
     my $ctx = {};
@@ -155,11 +155,11 @@ even arrays and then join the arrays back into the original charter string.
     cli() unless caller();
     1;
 
-# DONE Application specification<a id="orgheadline15"></a>
+# Application specification<a id="orgheadline15"></a>
 
 [Coding Exercise Specification](file:///home/mburns/Downloads/backend_coding_exercise.pdf)
 
-## DONE General Requirements<a id="orgheadline4"></a>
+## General Requirements<a id="orgheadline4"></a>
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -226,7 +226,7 @@ even arrays and then join the arrays back into the original charter string.
 </tbody>
 </table>
 
-## DONE API Endpoint Function Requirements<a id="orgheadline5"></a>
+## API Endpoint Function Requirements<a id="orgheadline5"></a>
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -263,7 +263,7 @@ even arrays and then join the arrays back into the original charter string.
 </tbody>
 </table>
 
-## DONE F1 - Split string into even and odd character arrays, Assume first character 1, is odd<a id="orgheadline7"></a>
+## F1 - Split string into even and odd character arrays, Assume first character 1, is odd<a id="orgheadline7"></a>
 
 -   Input: JSON object key "string" contains string.
 -   Output: JSON object keys odd and even each an array of characters.
@@ -278,17 +278,18 @@ Example        Response:
     
     {"string":"split me"}
 
-### DONE Code<a id="orgheadline6"></a>
+### Code<a id="orgheadline6"></a>
 
     post '/split'=>sub {
         my $c  = shift;
         my $split = apart($c->req->json->{string}) || undef;
-        return $c->render(json=>{message=>"Parameter Invalid"})->rendered(422) unless $split;
+        return $c->render(json=>{message=>"Parameter Invalid"})->rendered(422)
+          unless $split;
         $c->session('returned_last'=>$split);
         return $c->render(json=>$split)->rendered(200);
     };
 
-## DONE F2 - join undo split<a id="orgheadline9"></a>
+## F2 - join undo split<a id="orgheadline9"></a>
 
 -   INPUT: {"odd":["s","l","t","m"], "even":["p","i"," ","e"]}
 -   OUTPUT: {"string":"split me"}
@@ -302,18 +303,19 @@ Example        Response:
     
     {"odd":["s","l","t","m"], "even":["p","i"," ","e"]}
 
-### DONE Code<a id="orgheadline8"></a>
+### Code<a id="orgheadline8"></a>
 
     post '/join'=>sub {
         my $c  = shift;
         my ($odd, $even) =  @{$c->req->json}{qw(odd even)} || undef;
         my $join = together($odd, $even);
-        return $c->render(json=>{message=>"Parameter required"})->rendered(422) unless $join;
+        return $c->render(json=>{message=>"Parameter required"})->rendered(422)
+          unless $join;
         $c->session('returned_last'=>$join);
         return $c->render(json=>$join)->rendered(200);
     };
 
-## DONE F3 - Last result<a id="orgheadline12"></a>
+## F3 - Last result<a id="orgheadline12"></a>
 
 -   INPUT: {}
 -   OUTPUT: [{"string":"split me"} || {"odd":["s","l","t","m"], "even":["p","i"," ","e"]}]
@@ -325,13 +327,13 @@ Example        Response:
     POST http://localhost:3000/lastResult
     Accept: application/json
 
-### DONE Test<a id="orgheadline10"></a>
+### Test<a id="orgheadline10"></a>
 
-### DONE Code<a id="orgheadline11"></a>
+### Code<a id="orgheadline11"></a>
 
     get '/lastResponse'=>sub {$_[0]->render(json=>$_[0]->session('returned_last'))->rendered(200)};
 
-## DONE API Tests<a id="orgheadline13"></a>
+## API Tests<a id="orgheadline13"></a>
 
     $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
     $t->post_ok($url=>json=>$test_data)->status_is(200);
@@ -341,9 +343,9 @@ Example        Response:
     $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/lastResult');
     $t->post_ok($url=>json=>$test_data)->status_is(200);
 
-## DONE G1<a id="orgheadline14"></a>
+## G1<a id="orgheadline14"></a>
 
-# DONE Dev Tools<a id="orgheadline17"></a>
+# Dev Tools<a id="orgheadline17"></a>
 
     any '/' => sub { # Main login action
         my $c = shift;
@@ -351,9 +353,10 @@ Example        Response:
         $u =  $c->param('username') || $u;
         $p = $c->param('password') || $p;
     
-        return $c->render unless 200 == $c->ua->get(Mojo::URL->new($ENV{"auth_url"} || app->config('auth_url'))
-                                             ->query({username=>$u, password=>$p})
-                                             => {Accept=>'application/json'})->res;
+        return $c->render
+          unless $c->ua->get(Mojo::URL->new($ENV{"auth_url"} || app->config('auth_url'))
+                                            ->query({username=>$u, password=>$p})
+                                            => {Accept=>'application/json'})->res == 200;
         $c->session(user=>$u);
         $c->session(config=>app->config);
         $c->flash(message=>'authenticated');
@@ -375,9 +378,9 @@ Example        Response:
         $c->redirect_to('index');
     };
 
-## DONE dependencies<a id="orgheadline16"></a>
+## dependencies<a id="orgheadline16"></a>
 
-# DONE Configuration<a id="orgheadline18"></a>
+# Configuration<a id="orgheadline18"></a>
 
     {
      auth_url => 'https://interview-api.shiftboard.com/auth',
@@ -385,7 +388,7 @@ Example        Response:
      register_url => 'https://interview-api.shiftboard.com/register'
     }
 
-# DONE Application  Logic<a id="orgheadline29"></a>
+# Application  Logic<a id="orgheadline29"></a>
 
 ## F1<a id="orgheadline19"></a>
 
@@ -399,7 +402,8 @@ Example        Response:
 
     sub apart {
         my @array = split('', $_[0]);
-        return undef unless scalar @array > 0;
+        return undef
+          unless scalar @array > 0;
         my @odd = map {"$_"} @array[grep {!($_ & 1)} 0..$#array]; # bitwise AND array position select odd
         my @even = map {"$_"} @array[grep {($_ & 1)} 0..$#array]; # invert logic to take even
         return {even => \@even, odd => \@odd};
@@ -443,7 +447,8 @@ Example        Response:
     post '/split'=>sub {
         my $c  = shift;
         my $split = apart($c->req->json->{string}) || undef;
-        return $c->render(json=>{message=>"Parameter Invalid"})->rendered(422) unless $split;
+        return $c->render(json=>{message=>"Parameter Invalid"})->rendered(422)
+          unless $split;
         $c->session('returned_last'=>$split);
         return $c->render(json=>$split)->rendered(200);
     };
@@ -451,7 +456,8 @@ Example        Response:
         my $c  = shift;
         my ($odd, $even) =  @{$c->req->json}{qw(odd even)} || undef;
         my $join = together($odd, $even);
-        return $c->render(json=>{message=>"Parameter required"})->rendered(422) unless $join;
+        return $c->render(json=>{message=>"Parameter required"})->rendered(422)
+          unless $join;
         $c->session('returned_last'=>$join);
         return $c->render(json=>$join)->rendered(200);
     };
@@ -462,17 +468,19 @@ Example        Response:
 -   Application Functionality: return 403 on invalid sha1
 -   Application Functionality: return 422 on missing parameters
 
-## DONE Access Management<a id="orgheadline27"></a>
+## Access Management<a id="orgheadline27"></a>
 
     under sub { # Valid API Requirement Assertions
         my $c = shift;
         my $signature = $c->param('signature') || undef;
         my $string =  $c->req->json->{string} || undef;
-        return $c->render(json=>{message=>"Parameter required)"})->rendered(422) unless $string;
-        return $c->render(json=>{message=>"Checksum failure"})->rendered(403) unless $signature && ($signature eq sha1($string));
+        return $c->render(json=>{message=>"Parameter required)"})->rendered(422)
+          unless $string;
+        return $c->render(json=>{message=>"Checksum failure"})->rendered(403)
+          unless $signature && ($signature eq sha1($string));
     };
 
-## DONE Application Code<a id="orgheadline28"></a>
+## Application Code<a id="orgheadline28"></a>
 
     use strict;
     use warnings;
@@ -501,7 +509,8 @@ Example        Response:
     }
     sub apart {
         my @array = split('', $_[0]);
-        return undef unless scalar @array > 0;
+        return undef
+          unless scalar @array > 0;
         my @odd = map {"$_"} @array[grep {!($_ & 1)} 0..$#array]; # bitwise AND array position select odd
         my @even = map {"$_"} @array[grep {($_ & 1)} 0..$#array]; # invert logic to take even
         return {even => \@even, odd => \@odd};
@@ -519,14 +528,17 @@ Example        Response:
                 my $c = shift;
                 my $signature = $c->param('signature') || undef;
                 my $string =  $c->req->json->{string} || undef;
-                return $c->render(json=>{message=>"Parameter required)"})->rendered(422) unless $string;
-                return $c->render(json=>{message=>"Checksum failure"})->rendered(403) unless $signature && ($signature eq sha1($string));
+                return $c->render(json=>{message=>"Parameter required)"})->rendered(422)
+                  unless $string;
+                return $c->render(json=>{message=>"Checksum failure"})->rendered(403)
+                  unless $signature && ($signature eq sha1($string));
             };
         
                 post '/split'=>sub {
                     my $c  = shift;
                     my $split = apart($c->req->json->{string}) || undef;
-                    return $c->render(json=>{message=>"Parameter Invalid"})->rendered(422) unless $split;
+                    return $c->render(json=>{message=>"Parameter Invalid"})->rendered(422)
+                      unless $split;
                     $c->session('returned_last'=>$split);
                     return $c->render(json=>$split)->rendered(200);
                 };
@@ -534,7 +546,8 @@ Example        Response:
                     my $c  = shift;
                     my ($odd, $even) =  @{$c->req->json}{qw(odd even)} || undef;
                     my $join = together($odd, $even);
-                    return $c->render(json=>{message=>"Parameter required"})->rendered(422) unless $join;
+                    return $c->render(json=>{message=>"Parameter required"})->rendered(422)
+                      unless $join;
                     $c->session('returned_last'=>$join);
                     return $c->render(json=>$join)->rendered(200);
                 };
@@ -547,9 +560,10 @@ Example        Response:
         $u =  $c->param('username') || $u;
         $p = $c->param('password') || $p;
     
-        return $c->render unless 200 == $c->ua->get(Mojo::URL->new($ENV{"auth_url"} || app->config('auth_url'))
-                                             ->query({username=>$u, password=>$p})
-                                             => {Accept=>'application/json'})->res;
+        return $c->render
+          unless $c->ua->get(Mojo::URL->new($ENV{"auth_url"} || app->config('auth_url'))
+                                            ->query({username=>$u, password=>$p})
+                                            => {Accept=>'application/json'})->res == 200;
         $c->session(user=>$u);
         $c->session(config=>app->config);
         $c->flash(message=>'authenticated');
@@ -643,15 +657,15 @@ Example        Response:
         }
       }
 
-# DONE System Integration<a id="orgheadline33"></a>
+# System Integration<a id="orgheadline33"></a>
 
-## DONE Systemd<a id="orgheadline30"></a>
+## Systemd<a id="orgheadline30"></a>
 
     systemctl stop partition_combiner
     systemctl start partition_combiner
     systemctl status partition_combiner
 
-## DONE Monitoring<a id="orgheadline32"></a>
+## Monitoring<a id="orgheadline32"></a>
 
 ### Toggle<a id="orgheadline31"></a>
 
@@ -687,7 +701,7 @@ Example        Response:
     $SIG{'QUIT'} = \&handler;
         # host and port are optional
 
-# DONE Environment Variables<a id="orgheadline34"></a>
+# Environment Variables<a id="orgheadline34"></a>
 
     export partition_combiner_auth_url='https://interview-api.shiftboard.com/auth';
     export partition_combiner_register_url='https://interview-api.shiftboard.com/register';
@@ -707,7 +721,7 @@ Example        Response:
     use Riemann::Client;
     use sigtrap qw/handler signal_handler normal-signals/;
 
-# DONE Test Suite<a id="orgheadline35"></a>
+# Test Suite<a id="orgheadline35"></a>
 
     use Audition::WebService;
     use Digest::SHA  qw(sha1);
@@ -762,11 +776,11 @@ Example        Response:
             $t->post_ok($url=>json=>$test_data)->status_is(200);
     };
 
-# DONE Build<a id="orgheadline36"></a>
+# Build<a id="orgheadline36"></a>
 
     prove -v
 
-# DONE Provision<a id="orgheadline42"></a>
+# Provision<a id="orgheadline42"></a>
 
 ## TODO Appliance (App + Packer Image)<a id="orgheadline37"></a>
 
@@ -778,15 +792,15 @@ Example        Response:
 
 ## TODO Reverse Proxy<a id="orgheadline41"></a>
 
-# DONE Release<a id="orgheadline44"></a>
+# Release<a id="orgheadline44"></a>
 
-## DONE Push<a id="orgheadline43"></a>
-
-    git push origin release-next
+## Push<a id="orgheadline43"></a>
 
     git push origin release-next
 
-# DONE Deployment<a id="orgheadline53"></a>
+    git push origin release-next
+
+# Deployment<a id="orgheadline53"></a>
 
 ## TODO Package<a id="orgheadline52"></a>
 
@@ -835,8 +849,10 @@ while enabling fast recall to the how and why this things.
 Harvest low hanging fruit that yeilds nice to have features while in development
 
 -   forensic system analysis via instant replay using atop archive fils + auditd + log files + application virtualized containerization
-
-Use a push system based on ssh and public/private key access.
+-   providing a swagger api that allows dev ops tasks to be easily scripted via your favorite language as a client
+    creates a feedback path which makes what you can do directly from the devops docs directly or run as a script by
+    running emacs as a dynamic language from called from a shell script.  This active documentation is a playbook - an automated one.
+-   Use a push system based on ssh and public/private key access.
 
 ## Features<a id="orgheadline59"></a>
 

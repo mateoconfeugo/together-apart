@@ -1,14 +1,15 @@
-#+SETUPFILE: themes/theme-readtheorg.setup
-#+TITLE:  Split and Join API Endpoints Webservice DevOps Doc
+#+SETUPFILE: themes/org-minimal-theme.setup
+#+TITLE:  API Endpoints Webservice DevOps Doc for together-apart project
 #+AUTHOR: Matthew Burns
 #+EMAIL: matthewburns@gmail.com
 #+DATE: <2018-05-01 Tue>
 #+LANGUAGE: en
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./org.css"/>
 * Program Descriptions
-* DONE Usage
+*  Usage
 This application provides a simple REST inspired service to divide a character string into odd and
 even arrays and then join the arrays back into the original charter string.
-* DONE Summary
+*  Summary
 #+NAME: run-unless-caller
 #+BEGIN_SRC perl
 # INITIALIZATION
@@ -41,9 +42,9 @@ sub cli {
 cli() unless caller();
 1;
 #+END_SRC
-* DONE Application specification
+*  Application specification
 [[file:///home/mburns/Downloads/backend_coding_exercise.pdf][Coding Exercise Specification]]
-** DONE General Requirements
+**  General Requirements
 | Spec ID | Description                                                                             |
 |---------+-----------------------------------------------------------------------------------------|
 | G0      | Create valid credentials via register service https://interview-api.shiftboard.com/auth |
@@ -54,13 +55,13 @@ cli() unless caller();
 | G5      | Required SHA1 posted content digest query parameter, signature, return 403 if  invalid  |
 | G6      | Missing parameters return 422                                                           |
 | G7      | Operate in a non-sticky, load balanced environment.                                     |
-** DONE API Endpoint Function Requirements
+**  API Endpoint Function Requirements
 | Spec ID | Description                                                                                     |
 |---------+-------------------------------------------------------------------------------------------------|
 | F1      | Split string into even and odd character arrays, Assume first character 1, is odd.              |
 | F2      | The user/pass will successfully authenticate against https://interview-api.shiftboard.com/auth. |
 | F3      | Last result depending on method called last                                                     |
-** DONE F1 - Split string into even and odd character arrays, Assume first character 1, is odd
+**  F1 - Split string into even and odd character arrays, Assume first character 1, is odd
  - Input: JSON object key "string" contains string.
  - Output: JSON object keys odd and even each an array of characters.
 #+BEGIN_SRC sh
@@ -75,18 +76,19 @@ Accept: application/json
 
 {"string":"split me"}
 #+END_SRC
-*** DONE Code
+***  Code
 #+NAME: api-f1
 #+BEGIN_SRC perl :noweb yes
     post '/split'=>sub {
         my $c  = shift;
         my $split = apart($c->req->json->{string}) || undef;
-        return $c->render(json=>{message=>"Parameter Invalid"})->rendered(422) unless $split;
+        return $c->render(json=>{message=>"Parameter Invalid"})->rendered(422)
+          unless $split;
         $c->session('returned_last'=>$split);
         return $c->render(json=>$split)->rendered(200);
     };
 #+END_SRC
-** DONE F2 - join undo split
+**  F2 - join undo split
  - INPUT: {"odd":["s","l","t","m"], "even":["p","i"," ","e"]}
  - OUTPUT: {"string":"split me"}
 #+BEGIN_SRC sh
@@ -100,19 +102,20 @@ Accept: application/json
 
 {"odd":["s","l","t","m"], "even":["p","i"," ","e"]}
 #+END_SRC
-*** DONE Code
+***  Code
 #+NAME: api-f2
 #+BEGIN_SRC perl :noweb yes
     post '/join'=>sub {
         my $c  = shift;
         my ($odd, $even) =  @{$c->req->json}{qw(odd even)} || undef;
         my $join = together($odd, $even);
-        return $c->render(json=>{message=>"Parameter required"})->rendered(422) unless $join;
+        return $c->render(json=>{message=>"Parameter required"})->rendered(422)
+          unless $join;
         $c->session('returned_last'=>$join);
         return $c->render(json=>$join)->rendered(200);
     };
 #+END_SRC
-** DONE F3 - Last result
+**  F3 - Last result
  - INPUT: {}
  - OUTPUT: [{"string":"split me"} || {"odd":["s","l","t","m"], "even":["p","i"," ","e"]}]
 #+BEGIN_SRC sh
@@ -125,13 +128,13 @@ http://localhost:3000/join?signature=6edd74450aa9206c4ba0b8c009de382a3e91f404 \
 POST http://localhost:3000/lastResult
 Accept: application/json
 #+END_SRC
-*** DONE Test
-*** DONE Code
+***  Test
+***  Code
 #+NAME: last-responsea
 #+BEGIN_SRC perl :noweb yes
 get '/lastResponse'=>sub {$_[0]->render(json=>$_[0]->session('returned_last'))->rendered(200)};
 #+END_SRC
-** DONE API Tests
+**  API Tests
 #+NAME: api-tests
 #+BEGIN_SRC perl :noweb yes
     $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
@@ -142,12 +145,12 @@ get '/lastResponse'=>sub {$_[0]->render(json=>$_[0]->session('returned_last'))->
     $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/lastResult');
     $t->post_ok($url=>json=>$test_data)->status_is(200);
 #+END_SRC
-** DONE G1
+**  G1
 #+NAME: app-auth-access-functionality
 #+BEGIN_SRC perl :noweb yes
 #+END_SRC
 
-* DONE Dev Tools
+*  Dev Tools
 #+NAME: dev-html-api
 #+BEGIN_SRC perl
 any '/' => sub { # Main login action
@@ -156,9 +159,10 @@ any '/' => sub { # Main login action
     $u =  $c->param('username') || $u;
     $p = $c->param('password') || $p;
 
-    return $c->render unless 200 == $c->ua->get(Mojo::URL->new($ENV{"auth_url"} || app->config('auth_url'))
-                                         ->query({username=>$u, password=>$p})
-                                         => {Accept=>'application/json'})->res;
+    return $c->render
+      unless $c->ua->get(Mojo::URL->new($ENV{"auth_url"} || app->config('auth_url'))
+                                        ->query({username=>$u, password=>$p})
+                                        => {Accept=>'application/json'})->res == 200;
     $c->session(user=>$u);
     $c->session(config=>app->config);
     $c->flash(message=>'authenticated');
@@ -180,9 +184,9 @@ get '/logout' => sub { # Logout action
     $c->redirect_to('index');
 };
 #+END_SRC
-** DONE dependencies
+**  dependencies
 
-* DONE Configuration
+*  Configuration
 #+NAME: config
 #+BEGIN_SRC perl :noweb yes :mkdir yes :tangle Audition-WebService/lib/Audition/WebService.conf
 {
@@ -191,7 +195,7 @@ get '/logout' => sub { # Logout action
  register_url => 'https://interview-api.shiftboard.com/register'
 }
 #+END_SRC
-* DONE Application  Logic
+*  Application  Logic
 ** F1
 #+NAME: primary-app-functionality
 #+BEGIN_SRC perl :noweb yesn
@@ -206,7 +210,8 @@ sub together {
 #+BEGIN_SRC perl :noweb yes
 sub apart {
     my @array = split('', $_[0]);
-    return undef unless scalar @array > 0;
+    return undef
+      unless scalar @array > 0;
     my @odd = map {"$_"} @array[grep {!($_ & 1)} 0..$#array]; # bitwise AND array position select odd
     my @even = map {"$_"} @array[grep {($_ & 1)} 0..$#array]; # invert logic to take even
     return {even => \@even, odd => \@odd};
@@ -259,19 +264,21 @@ subtest 'testing registered authentication' => sub {
  - Application Functionality: return 401 on unsuccessful auth
  - Application Functionality: return 403 on invalid sha1
  - Application Functionality: return 422 on missing parameters
-** DONE Access Management
+**  Access Management
  #+NAME: user-validation
  #+BEGIN_SRC perl
     under sub { # Valid API Requirement Assertions
         my $c = shift;
         my $signature = $c->param('signature') || undef;
         my $string =  $c->req->json->{string} || undef;
-        return $c->render(json=>{message=>"Parameter required)"})->rendered(422) unless $string;
-        return $c->render(json=>{message=>"Checksum failure"})->rendered(403) unless $signature && ($signature eq sha1($string));
+        return $c->render(json=>{message=>"Parameter required)"})->rendered(422)
+          unless $string;
+        return $c->render(json=>{message=>"Checksum failure"})->rendered(403)
+          unless $signature && ($signature eq sha1($string));
     };
 
  #+END_SRC
-** DONE Application Code
+**  Application Code
  #+NAME: app-biz-domain-functionality
  #+BEGIN_SRC perl :noweb yes :mkdir yes :tangle Audition-WebService/lib/Audition/WebService.pm
 <<dependencies>>
@@ -313,14 +320,14 @@ group {
 
  #+END_SRC
 
-* DONE System Integration
-** DONE Systemd
+*  System Integration
+**  Systemd
  #+BEGIN_SRC sh
 systemctl stop partition_combiner
 systemctl start partition_combiner
 systemctl status partition_combiner
  #+END_SRC
-** DONE Monitoring
+**  Monitoring
 *** Toggle
 #+BEGIN_SRC sh
 pgrep audition | kill 11
@@ -358,7 +365,7 @@ $SIG{'INT'}  = \&activate_monitor_signal;
 $SIG{'QUIT'} = \&handler;
     # host and port are optional
 #+END_SRC
-* DONE Environment Variables
+*  Environment Variables
  #+BEGIN_SRC sh :mkdir app_env_vars.sh
 export partition_combiner_auth_url='https://interview-api.shiftboard.com/auth';
 export partition_combiner_register_url='https://interview-api.shiftboard.com/register';
@@ -384,7 +391,7 @@ use Riemann::Client;
 use sigtrap qw/handler signal_handler normal-signals/;
  #+END_SRC
 
-* DONE Test Suite
+*  Test Suite
 #+NAME: app-test-suite
 #+BEGIN_SRC perl :noweb yes  :mkdirp yes :tangle Audition-WebService/t/basic.t
 use Audition::WebService;
@@ -421,18 +428,18 @@ subtest 'testing api app biz domain functionality' => sub {
     <<api-tests>>
 };
 #+END_SRC
-* DONE Build
+*  Build
 #+BEGIN_SRC sh
 prove -v
 #+END_SRC
-* DONE Provision
+*  Provision
 ** TODO Appliance (App + Packer Image)
 ** TODO Docker Image
 ** TODO Platform Runtime Orchestration
 ** TODO SSL
 ** TODO Reverse Proxy
-* DONE Release
-** DONE Push
+*  Release
+**  Push
 #+BEGIN_SRC sh
 git push origin release-next
 #+END_SRC
@@ -440,7 +447,7 @@ git push origin release-next
 #+BEGIN_SRC sh
 git push origin release-next
 #+END_SRC
-* DONE Deployment
+*  Deployment
 ** TODO Package
 #+BEGIN_SRC sh
 dpkg partition_combiner
@@ -473,8 +480,10 @@ while enabling fast recall to the how and why this things.
 
 Harvest low hanging fruit that yeilds nice to have features while in development
  - forensic system analysis via instant replay using atop archive fils + auditd + log files + application virtualized containerization
-
-Use a push system based on ssh and public/private key access.
+ - providing a swagger api that allows dev ops tasks to be easily scripted via your favorite language as a client
+   creates a feedback path which makes what you can do directly from the devops docs directly or run as a script by
+   running emacs as a dynamic language from called from a shell script.  This active documentation is a playbook - an automated one.
+ - Use a push system based on ssh and public/private key access.
 
 ** Features
  - Publishes code into source files
