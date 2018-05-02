@@ -1,90 +1,333 @@
-* TODO Summary
-* DONE Exception/Error handling
-** DONE Network/connectivity
-* DONE Configuration
-* DONE Environment Variables
-* TODO Testing
+#+SETUPFILE: themes/theme-readtheorg.setup
+#+TITLE:  Split and Join API Endpoints Webservice DevOps Doc
+#+AUTHOR: Matthew Burns
+#+EMAIL: matthewburns@gmail.com
+#+DATE: <2018-05-01 Tue>
+#+LANGUAGE: en
+* Program Descriptions
+* DONE Usage
+This application provides a simple REST inspired service to divide a character string into odd and
+even arrays and then join the arrays back into the original charter string.
+* DONE Summary
+#+NAME: run-unless-caller
 #+BEGIN_SRC perl
-use Audition::WebService;
-use Digest::SHA  qw(sha1);
-use Mojo::JSON qw(decode_json encode_json);
-use Test::More;
-use Test::Mojo;
+# INITIALIZATION
+my $ctx = {};
 
+my $state = {
+    register=>$ENV{"register_url"} || app->config('register_url'),
+    auth=>$ENV{"auth_url"} || app->config('auth_url'),
+    app_name=>$ENV{"app_name"} || app->config('name'),
+    status=>'stopped',
+    cfgs=>app->config
+};
 
-use FindBin;
-#require "$FindBin::Bin/../lib";
-use lib "/home/mburns/projects/bb/shiftboard/Audition-WebService/lib";
+my $run = sub {
+    my $s = shift || $state;
+    return sub {
+        $s->{status}='start';
+        app->log->debug("starting");
+        get '/'=>'with_config';
+        $s->{status}='running';
+        return {state=>$s};
+    };
+};
 
-# Some hash
-my $test_input = "split me";
-my $want = { 'even' => ['p', 'i', ' ', 'e'], 'odd'  => ['s', 'l', 't', 'm']};
+sub cli {
+    my $process = $run->($state)->($ctx);
+    app->start;
+}
 
-# Test the splitting up of string
-my $test_output = Audition::WebService::split_elements($test_input);
-my $test_result = Audition::WebService::join_elements($test_output->{'odd'}, $test_output->{'even'});
-is($test_result, $test_input, 'Split and then rejoin');
-
-my $t = Test::Mojo->new;
-
-# Test invalid authentication.
-my $url = $t->ua->server->url->userinfo('bad:terrible')->path('/split');
-$t->post_ok($url => json => $test_data)->status_is(401);
-$url = $t->ua->server->url->userinfo('bad:terrible')->path('/join');
-$t->post_ok($url => json  => $want)->status_is(401);
-
-# Test with valid signature and credentials
-my $test_data = {'string' => $test_input};
-my $good_signature = sha1($test_input);
-$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
-$url->query({signature => $good_signature});
-$t->post_ok($url => json => $test_data)->status_is(200);
-
-my $good_signature = sha1(encode_json($want));
-$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
-$url->query({signature => $good_signature});
-$t->post_ok($url => json => $want)->status_is(200);
-
-# Test for missing signature
-my $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
-$t->post_ok($url => json => $test_data)->status_is(403);
-$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
-$t->post_ok($url => json => $test_data)->status_is(403);
-
-# Test for tampered signature
-my $bad_signature = sha1($test_input . "corruption");
-$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
-$url->query({signature => $bad_signature});
-$t->post_ok($url => json => $test_data)->status_is(403);
-
-$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
-$url->query({signature => $bad_signature});
-$t->post_ok($url => json => $want)->status_is(403);
-
-
-# Test with valid signature
-my $good_signature = sha1($test_input);
-$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
-$url->query({signature => $good_signature});
-$t->post_ok($url => json)->status_is(200);
-
-$url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
-$url->query({signature => $good_signature});
-$t->post_ok($url => json)->status_is(200);
-
-done_testing();
-
-__END__
+cli() unless caller();
+1;
 #+END_SRC
-* DONE Golf - (eliminate extra code)
-* TODO System Integration
-** DONE Monitoring
-#+BEGIN_SRC perl
-use strict;
-use warnings;
-use Riemann::Client;
-use sigtrap qw/handler signal_handler normal-signals/;
+* DONE Application specification
+[[file:///home/mburns/Downloads/backend_coding_exercise.pdf][Coding Exercise Specification]]
+** DONE General Requirements
+| Spec ID | Description                                                                             |
+|---------+-----------------------------------------------------------------------------------------|
+| G0      | Create valid credentials via register service https://interview-api.shiftboard.com/auth |
+| G1      | All requests must include basic auth.                                                   |
+| G2      | Validated against at auth service https://interview-api.shiftboard.com/auth.            |
+| G3      | Unsuccessful attempts return 401                                                        |
+| G4      | POSTs are a JSON formated object                                                        |
+| G5      | Required SHA1 posted content digest query parameter, signature, return 403 if  invalid  |
+| G6      | Missing parameters return 422                                                           |
+| G7      | Operate in a non-sticky, load balanced environment.                                     |
+** DONE API Endpoint Function Requirements
+| Spec ID | Description                                                                                     |
+|---------+-------------------------------------------------------------------------------------------------|
+| F1      | Split string into even and odd character arrays, Assume first character 1, is odd.              |
+| F2      | The user/pass will successfully authenticate against https://interview-api.shiftboard.com/auth. |
+| F3      | Last result depending on method called last                                                     |
+** DONE F1 - Split string into even and odd character arrays, Assume first character 1, is odd
+ - Input: JSON object key "string" contains string.
+ - Output: JSON object keys odd and even each an array of characters.
+#+BEGIN_SRC sh
+curl -X POST -u USER:PASS \
+#+END_SRC
+Example	Response:
+{"odd":["s","l","t","m"], "even":["p","i"," ","e"]}
 
+#+BEGIN_SRC restclient
+POST http://localhost:3000/split?signature=04e74f3b8cfcf0b502ff701a9b5f0b98ece0d3b4
+Accept: application/json
+
+{"string":"split me"}
+#+END_SRC
+*** DONE Code
+#+NAME: api-f1
+#+BEGIN_SRC perl :noweb yes
+    post '/split'=>sub {
+        my $c  = shift;
+        my $split = apart($c->req->json->{string}) || undef;
+        return $c->render(json=>{message=>"Parameter Invalid"})->rendered(422) unless $split;
+        $c->session('returned_last'=>$split);
+        return $c->render(json=>$split)->rendered(200);
+    };
+#+END_SRC
+** DONE F2 - join undo split
+ - INPUT: {"odd":["s","l","t","m"], "even":["p","i"," ","e"]}
+ - OUTPUT: {"string":"split me"}
+#+BEGIN_SRC sh
+curl -X POST -u USER:PASS \
+http://localhost:3000/join?signature=6edd74450aa9206c4ba0b8c009de382a3e91f404 \
+-d '{"odd":["s","l","t","m"], "even":["p","i"," ","e"]}'
+#+END_SRC
+#+BEGIN_SRC restclient
+POST http://localhost:3000/join?signature=6edd74450aa9206c4ba0b8c009de382a3e91f404
+Accept: application/json
+
+{"odd":["s","l","t","m"], "even":["p","i"," ","e"]}
+#+END_SRC
+*** DONE Code
+#+NAME: api-f2
+#+BEGIN_SRC perl :noweb yes
+    post '/join'=>sub {
+        my $c  = shift;
+        my ($odd, $even) =  @{$c->req->json}{qw(odd even)} || undef;
+        my $join = together($odd, $even);
+        return $c->render(json=>{message=>"Parameter required"})->rendered(422) unless $join;
+        $c->session('returned_last'=>$join);
+        return $c->render(json=>$join)->rendered(200);
+    };
+#+END_SRC
+** DONE F3 - Last result
+ - INPUT: {}
+ - OUTPUT: [{"string":"split me"} || {"odd":["s","l","t","m"], "even":["p","i"," ","e"]}]
+#+BEGIN_SRC sh
+curl -X POST -u USER:PASS \
+http://localhost:3000/join?signature=6edd74450aa9206c4ba0b8c009de382a3e91f404 \
+-d '{"odd":["s","l","t","m"], "even":["p","i"," ","e"]}'
+#+END_SRC
+
+#+BEGIN_SRC restclient
+POST http://localhost:3000/lastResult
+Accept: application/json
+#+END_SRC
+*** DONE Test
+*** DONE Code
+#+NAME: last-responsea
+#+BEGIN_SRC perl :noweb yes
+get '/lastResponse'=>sub {$_[0]->render(json=>$_[0]->session('returned_last'))->rendered(200)};
+#+END_SRC
+** DONE API Tests
+#+NAME: api-tests
+#+BEGIN_SRC perl :noweb yes
+    $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
+    $t->post_ok($url=>json=>$test_data)->status_is(200);
+    my $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
+    $url->query({signature => $good_signature});
+    $t->post_ok($url=>json=>$test_data)->status_is(200);
+    $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/lastResult');
+    $t->post_ok($url=>json=>$test_data)->status_is(200);
+#+END_SRC
+** DONE G1
+#+NAME: app-auth-access-functionality
+#+BEGIN_SRC perl :noweb yes
+#+END_SRC
+
+* DONE Dev Tools
+#+NAME: dev-html-api
+#+BEGIN_SRC perl
+any '/' => sub { # Main login action
+    my $c = shift;
+    my ($u, $p) = split(':',  $c->req->url->to_abs->userinfo);
+    $u =  $c->param('username') || $u;
+    $p = $c->param('password') || $p;
+
+    return $c->render unless 200 == $c->ua->get(Mojo::URL->new($ENV{"auth_url"} || app->config('auth_url'))
+                                         ->query({username=>$u, password=>$p})
+                                         => {Accept=>'application/json'})->res;
+    $c->session(user=>$u);
+    $c->session(config=>app->config);
+    $c->flash(message=>'authenticated');
+    $c->redirect_to('protected');
+} => 'index';
+
+group { # logged in user actions
+    under sub {
+        my $c = shift;
+        return 1 if $c->session('user')->redirect_to('index');
+        return undef;
+    };
+    get '/protected';
+};
+
+get '/logout' => sub { # Logout action
+    my $c = shift;
+    $c->session(expires => 1);
+    $c->redirect_to('index');
+};
+#+END_SRC
+** DONE dependencies
+
+* DONE Configuration
+#+NAME: config
+#+BEGIN_SRC perl :noweb yes :mkdir yes :tangle Audition-WebService/lib/Audition/WebService.conf
+{
+ auth_url => 'https://interview-api.shiftboard.com/auth',
+ name => 'partition_combiner',
+ register_url => 'https://interview-api.shiftboard.com/register'
+}
+#+END_SRC
+* DONE Application  Logic
+** F1
+#+NAME: primary-app-functionality
+#+BEGIN_SRC perl :noweb yesn
+sub together {
+    my ($odd, $even) = @_;
+    return undef unless scalar @$odd > 0 && scalar @$even > 0;
+    return join '', zip(@$odd, @$even);
+}
+#+END_SRC
+** F2
+#+NAME: primary-app-functionality
+#+BEGIN_SRC perl :noweb yes
+sub apart {
+    my @array = split('', $_[0]);
+    return undef unless scalar @array > 0;
+    my @odd = map {"$_"} @array[grep {!($_ & 1)} 0..$#array]; # bitwise AND array position select odd
+    my @even = map {"$_"} @array[grep {($_ & 1)} 0..$#array]; # invert logic to take even
+    return {even => \@even, odd => \@odd};
+}
+#+END_SRC
+** F3
+#+NAME: f3
+#+BEGIN_SRC perl :noweb yes
+get '/lastResponse'=>sub {$_[0]->render(json=>$_[0]->session('returned_last'))->rendered(200)};
+#+END_SRC
+** Basic Authentication using webservice
+*** Code
+#+NAME: api-basic-authentication
+#+BEGIN_SRC perl :noweb yes
+under(sub { my $c = shift; # Basic Authentication for each request
+            my ($username, $password) = split(':',  $c->req->url->to_abs->userinfo);
+            $c->ua->get(Mojo::URL->new($ENV{"auth_url"} || app->config('auth_url'))
+                        ->query({username=>$username, password=>$password})
+                        => {Accept=>'application/json'})->res == 200
+                        ? return 1
+                        : return $c->render(json=>{message=>"Invalid"})->rendered(401)});
+#+END_SRC
+*** Test
+#+NAME: auth-testing
+#+BEGIN_SRC perl :noweb yes
+subtest 'testing registered authentication' => sub {
+    plan tests => 2;
+    my $module = Test::MockModule->new('Audition::WebService');
+    $module->mock('apart', sub { return $desired_apart });
+    $module->mock('together', sub { return $desired_together });
+    Module::Name::subroutine(@args);
+    my $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
+    $url->query({signature => $good_signature});
+    $t->post_ok($url=>json=>$test_data)->status_is(200);
+    $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
+    $t->post_ok($url=>json=>$test_data)->status_is(200);
+    $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/lastResult');
+    $t->post_ok($url=>json=>$test_data)->status_is(200);
+};
+#+END_SRC
+
+** API Interface
+#+NAME: api-interface
+#+BEGIN_SRC perl :noweb yes
+    <<api-f1>>
+    <<api-f2>>
+    <<api-f3>>
+#+END_SRC
+*** Error Codes
+ - Application Functionality: return 401 on unsuccessful auth
+ - Application Functionality: return 403 on invalid sha1
+ - Application Functionality: return 422 on missing parameters
+** DONE Access Management
+ #+NAME: user-validation
+ #+BEGIN_SRC perl
+    under sub { # Valid API Requirement Assertions
+        my $c = shift;
+        my $signature = $c->param('signature') || undef;
+        my $string =  $c->req->json->{string} || undef;
+        return $c->render(json=>{message=>"Parameter required)"})->rendered(422) unless $string;
+        return $c->render(json=>{message=>"Checksum failure"})->rendered(403) unless $signature && ($signature eq sha1($string));
+    };
+
+ #+END_SRC
+** DONE Application Code
+ #+NAME: app-biz-domain-functionality
+ #+BEGIN_SRC perl :noweb yes :mkdir yes :tangle Audition-WebService/lib/Audition/WebService.pm
+<<dependencies>>
+
+sub startup {
+    my $app = shift;
+    $app->plugin(Swagger2 => {url => "data://Audition::WebService/api.json"});
+  }
+
+plugin 'Config';
+
+<<primary-app-functionality>>
+<<api-basic-authentication>>
+
+group {
+    <<user-validation>>
+    <<api-interface>>
+};
+
+<<dev-html-api>>
+<<monitoring>>
+<<run-unless-caller>>
+
+  __DATA__
+  @@ together_apart.json
+  {
+    "swagger": "2.0",
+    "info": {...},
+    "host": "petstore.swagger.wordnik.com",
+    "basePath": "/api",
+    "paths": {
+      "/pets": {
+        "get": {...}
+      }
+    }
+  }
+
+
+
+ #+END_SRC
+
+* DONE System Integration
+** DONE Systemd
+ #+BEGIN_SRC sh
+systemctl stop partition_combiner
+systemctl start partition_combiner
+systemctl status partition_combiner
+ #+END_SRC
+** DONE Monitoring
+*** Toggle
+#+BEGIN_SRC sh
+pgrep audition | kill 11
+#+END_SRC
+
+#+NAME: monitoring
+#+BEGIN_SRC perl
 sub handler {   # 1st argument is signal name
 	my($sig) = @_;
 	print "Caught a SIG$sig--shutting down\n";
@@ -113,208 +356,153 @@ sub activate_monitor_signal {
 
 $SIG{'INT'}  = \&activate_monitor_signal;
 $SIG{'QUIT'} = \&handler;
-
-
     # host and port are optional
 #+END_SRC
-** DONE Logging
-** DONE Framework Utilization
-* DONE Documentation
-* Dependencies
-* Application Logic
-** Application functionality odd -even
-** Basic Authentication using webservice
-** Application functionality lastResult
-** Application Functionality: return 401 on unsuccessful auth
-** Application Functionality: return 403 on invalid sha1
-** Application Functionality: return 422 on missing parameters
-* Code
-#+BEGIN_SRC perl
-package Audition::WebService;
+* DONE Environment Variables
+ #+BEGIN_SRC sh :mkdir app_env_vars.sh
+export partition_combiner_auth_url='https://interview-api.shiftboard.com/auth';
+export partition_combiner_register_url='https://interview-api.shiftboard.com/register';
+ #+END_SRC
+
+ #+BEGIN_SRC sh
+sudo apt-get install libmojolicious-perl  libdigest-sha-perl liblist-moreutils-perl libtry-tiny-perl
+ #+END_SRC
+
+ #+NAME: dependencies
+ #+BEGIN_SRC perl
 use strict;
 use warnings;
+
+package Audition::WebService;
 use Digest::SHA qw(sha1);
 use List::MoreUtils qw(zip);
-use Mojolicious::Lite;
+#use Mojolicious::Lite;
+use Mojo::Base "Mojolicious";
 use Mojo::URL;
-#use Mojo::UserAgent;
 use Mojo::Util qw(secure_compare);
+use Riemann::Client;
+use sigtrap qw/handler signal_handler normal-signals/;
+ #+END_SRC
 
-plugin 'Config';
-
-sub combine {
-    my ($odd, $even) = @_;
-    return undef unless scalar @$odd > 0 && scalar @$even > 0;
-    return join '', @zip(@$odd, @$even);
-}
-
-sub partition {
-    my @array = split('', $_[0]);
-    return undef unless scalar @array > 0;
-    my @odd = map {"$_"} @array[grep {!($_ & 1)} 0..$#array]; # bitwise AND array position select odd
-    my @even = map {"$_"} @array[grep {($_ & 1)} 0..$#array]; # invert logic to take even
-    return {even => \@even, odd => \@odd};
-}
-
-under(sub { # Authentication
-    my $c = shift;
-    my ($username, $password) = split(':',  $c->req->url->to_abs->userinfo);
-    $c->ua->get(Mojo::URL->new($ENV{"$name_auth_url"} || app->config('auth_url'))
-                ->query({username=>$username, password=>$password})
-                => {Accept=>'application/json'})->res == 200
-                ? return 1 : return $c->render(json=>{message=>"Invalid"})->rendered(401);
-      }
-    );
-
-group { # Valid API Requirement Assertions
-    under sub {
-        my $c = shift;
-        my $signature = $c->param('signature') || undef;
-        my $string =  $c->req->json->{string} || undef;
-        return $c->render(json=>{message=>"Parameter required)"})->rendered(422) unless $string;
-        return $c->render(json=>{message=>"Checksum failure"})->rendered(403) unless $signature && ($signature eq sha1($string));
-    };
-    post '/split' => sub {
-        my $c  = shift;
-        my $odds_n_evens = partition($c->req->json->{string}) || undef;
-        return $c->render(json=>{message=>"Parameter Invalid"})->rendered(422) unless $odds_n_evens;
-        $c->session('returned_last'=>$odds_n_evens);
-        return $c->render(json=>$odds_n_evens)->rendered(200);
-    };
-    post '/join' => sub {
-        my $c  = shift;
-        my ($odd, $even) =  @{$c->req->json}{qw(odd even)} || undef;
-        my $joined = combine($odd, $even);
-        return $c->render(json=>{message=>"Parameter required"})->rendered(422) unless $joined;
-        $c->session('returned_last' => $joined);
-        return $c->render(json => $joined)->rendered(200);
-    };
-};
-
-get '/lastResponse' => sub {
-    my $c = shift;
-    $c->render(json=>$c->session('returned_last')) || undef;
-};
-
-any '/' => sub { # Main login action
-    my $c = shift;
-    my $user = $c->param('user') || '';
-    my $pass = $c->param('pass') || '';
-    return $c->render unless $c->users->check($user, $pass);
-
-    $c->session(user => $user);
-    $c->flash(message => 'authenticated');
-    $c->redirect_to('protected');
-} => 'index';
-
-group { # logged in user actions
-    under sub {
-        my $c = shift;
-        return 1 if $c->session('user')->redirect_to('index');
-        return undef;
-    };
-    get '/protected';
-};
-
-get '/logout' => sub { # Logout action
-    my $c = shift;
-    $c->session(expires => 1);
-    $c->redirect_to('index');
-};
-
-
-sub run {
-    my ($ctx) = shift || {};
-    my $name = app->config('name');
-
-    my $initial_default_state = {
-        register=>$ENV{"$name_register_url"} || app->config('register_url'),
-        auth=>$ENV{"$name_auth_url"} || app->config('auth_url'),
-        app_name=>$name,
-        status=>'stopped',
-        cfgs=>app->config
-    };
-
-    my $closed_lambda = sub {
-        my $s = shift || $intial_default_state_;
-        return sub {
-            $s->{status=>'start'};
-            app->log->debug("starting $name");
-            get '/'=>'with_config';
-            $state_ctx->{status=>'running'};
-            return {app=>app->start, state=>$s};
-        };
-    }
-
-    my $run_state = $closed_lambda->($default_state)->($ctx);
-
-}
-
-run() unless caller();
-1;
-
-__DATA__
-@@ with_config.html.ep
-<!DOCTYPE html>
-<html>
-  <head><title><%= config 'name' %></title></head>
-  <body>Welcome to <%= config 'name' %></body>
-</html>
-
-__END__
-
-
-
-#!/usr/bin/env perl
-use Mojolicious::Lite;
-
-use lib 'lib';
+* DONE Test Suite
+#+NAME: app-test-suite
+#+BEGIN_SRC perl :noweb yes  :mkdirp yes :tangle Audition-WebService/t/basic.t
 use Audition::WebService;
-# Make signed cookies tamper resistant
-app->secrets([$ENV{APP_COOKIE_SIGNING_KEY} || 'DeletedCodeIsDebuggedCode']);
-helper users => sub { state $users = Audition::WebService::Users->new };
+use Digest::SHA  qw(sha1);
+use Mojo::JSON qw(decode_json encode_json);
+use Test::Mojo;
+use Test::MockModule
+use Test::More;
 
+use FindBin;
+#require "$FindBin::Bin/../lib";
+use lib "/home/mburns/projects/bb/shiftboard/Audition-WebService/lib";
 
+my $desired_together = "split me";
+my $desired_apart = {'even'=>['p', 'i', ' ', 'e'], 'odd'  => ['s', 'l', 't', 'm']};
+my $apart_got = apart($desired_together);
+my $got_together = together($test_output->{'odd'}, $test_output->{'even'});
+is($got_together, $desired_together, 'Odd and even combined into a single numberical sequence');
+is($apart_got, $desired_apart, 'Numbers split into two sequence based on being odd or even');
 
+my $t = Test::Mojo->new;
 
-sub is_digestable {
-    my $args = shift;
-    my ($sha, $data)  = @{$args}{qw(sha data)};
-    return undef unless $sha && $data;
+<<auth-testing>>
 
-    $sha eq sha1($data) ? return 1 : return 0;
-}
-
-sub authenticate {
-    my $args = shift;
-    my ($c, $url, $username, $password)  = @{$args}{qw(ctx url username password)};
-    return undef unless $username && $password;
-
-    my $json = try {
-        $c->ua->get($url)->result->json;
-    } catch {
-        warn "caught error: $_";
-    };
-    return secure_compare $c->req->url->to_abs->userinfo, "$username:$password";
-}
-
-sub is_authenticated {
-    my $args = shift;
-    my ($c, $url, $username, $password)  = @{$args}{qw(ctx url username password)};
-    return undef unless $username && $password;
-
-    my $json = $c->ua->get($url)->result->json;
-    return secure_compare $c->req->url->to_abs->userinfo, "$username:$password";
-}
-
-
-get '/' => sub {
-    my $c = shift;
-    if is_authenticated({ctx =>$c, url=>'', username=>$username, password=>$password}) {
-        return $c->render(text => 'Welcome priveledged one!');
-    }
-  $c->res->headers->www_authenticate('Basic');
-  $c->render(text => 'Halt who goes there!', status => 401);
+subtest 'testing api app biz domain functionality' => sub {
+    plan tests => 2;
+    my $module = Test::MockModule->new('Audition::WebService');
+        $module->mock('check_credentials', sub { return 1 });
+    Module::Name::subroutine(@args);
+    my $test_data = {'string'=>$desired_together};
+    my $good_signature = sha1($desired_together);
+    my $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
+    $url->query({signature => $good_signature});
+    <<api-tests>>
 };
-
 #+END_SRC
+* DONE Build
+#+BEGIN_SRC sh
+prove -v
+#+END_SRC
+* DONE Provision
+** TODO Appliance (App + Packer Image)
+** TODO Docker Image
+** TODO Platform Runtime Orchestration
+** TODO SSL
+** TODO Reverse Proxy
+* DONE Release
+** DONE Push
+#+BEGIN_SRC sh
+git push origin release-next
+#+END_SRC
+
+#+BEGIN_SRC sh
+git push origin release-next
+#+END_SRC
+* DONE Deployment
+** TODO Package
+#+BEGIN_SRC sh
+dpkg partition_combiner
+#+END_SRC
+*** logging/rotation
+*** pid
+*** system user
+*** group
+*** var/data
+*** auditing
+*** software defined storage
+*  Continuous Delivery /Continuous Integration
+** built-in api devops endpoint
+Target for github app repo release hook trigger post. Existing running version of the application
+sets up and restarts public facing webserver proxying with updated symbolic links for
+the site-availabe and sites-enabled point to the next blue green service pair in the the versioned
+deployment release chain.
+** sites-available
+** sites-enabled
+** restart
+* Appendix A:   DevOps Document Overview
+Relax, use what you already have - powerful devops tools/practice to automatically maintain and update
+your system are just familiar linux stuff and things and a couple simple ideas.
+
+Use the existing tools and practices already in place by major distros to manage application software so
+it blends into the ecosystem and plays by the distributions guidelines.  Translation put your software into
+correctly formated packages in this debian.  Work on projects like any other open source github project fork.
+The thinkng is: make it easy to work on the software and get it running - coupling that with make updating or rollingback easy
+while enabling fast recall to the how and why this things.
+
+Harvest low hanging fruit that yeilds nice to have features while in development
+ - forensic system analysis via instant replay using atop archive fils + auditd + log files + application virtualized containerization
+
+Use a push system based on ssh and public/private key access.
+
+** Features
+ - Publishes code into source files
+ - Releases the code into the upstream code repository
+ - Deploys the code onto the desired runtime platorm (dev, qa, stg, prd)
+ - Provisions the runtime infrastruce and like artifacts the application is dependent
+ - Capture the functional requirements in automate testable form
+ - Understand engineering decisions behind the implementation, design, methodology testing
+ - Define the way features are deployed into new versions of this WebService
+ - Run tests
+ - Provides application documentation
+ - Provide development history
+ - Provides a reduamentry cli interface to devops/maintence tasks
+ - Sets up and runs system from src control repo (github)
+ - Provide easy way to refer and collaborate among developers
+ - Continous Delivery with rollback
+ - Worksheet to aid in project management aspects of software development
+ - Bridge that first draft proof of concept devops task into part of the crm/orchestration process
+ - Allows the stitching together of many pre-existing tools
+ - Incorporate others work via pull requests in a timely fashion
+ - Define Idioms
+ - Capture domain specific paculiarities
+* Appendex B: System 3rd Party Dependencies/Requirements
+  - Local: Running in the context of a ordinary linux system account
+  - A single VPC, with the usual 3 security group setup - internal, web, and bastion.
+  - [[https://www.terraform.io][Terraform]] and for provisioning infrastructure.
+  - [[https://www.packer.io][Packer]] to build a single general-purpose base AMI.
+  - API web application
+  - Common library components
+  - Github hooks to deploy
+  - Riemann monitoring integration.
