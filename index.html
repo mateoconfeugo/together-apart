@@ -1,0 +1,1300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-05-02 Wed 12:55 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>API Endpoints Webservice DevOps Doc for together-apart project</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Matthew Burns" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="http://orgminimal.tizi.moe/bundle.min.css"/>
+<script src="http://orgminimal.tizi.moe/bundle.min.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="./org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">API Endpoints Webservice DevOps Doc for together-apart project</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">1. Program Descriptions</a></li>
+<li><a href="#orgheadline2">2. Usage</a></li>
+<li><a href="#orgheadline3">3. Summary</a></li>
+<li><a href="#orgheadline15">4. Application specification</a>
+<ul>
+<li><a href="#orgheadline4">4.1. General Requirements</a></li>
+<li><a href="#orgheadline5">4.2. API Endpoint Function Requirements</a></li>
+<li><a href="#orgheadline7">4.3. F1 - Split string into even and odd character arrays, Assume first character 1, is odd</a>
+<ul>
+<li><a href="#orgheadline6">4.3.1. Code</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline9">4.4. F2 - join undo split</a>
+<ul>
+<li><a href="#orgheadline8">4.4.1. Code</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline12">4.5. F3 - Last result</a>
+<ul>
+<li><a href="#orgheadline10">4.5.1. Test</a></li>
+<li><a href="#orgheadline11">4.5.2. Code</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline13">4.6. API Tests</a></li>
+<li><a href="#orgheadline14">4.7. G1</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline17">5. Dev Tools</a>
+<ul>
+<li><a href="#orgheadline16">5.1. dependencies</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline18">6. Configuration</a></li>
+<li><a href="#orgheadline29">7. Application  Logic</a>
+<ul>
+<li><a href="#orgheadline19">7.1. F1</a></li>
+<li><a href="#orgheadline20">7.2. F2</a></li>
+<li><a href="#orgheadline21">7.3. F3</a></li>
+<li><a href="#orgheadline24">7.4. Basic Authentication using webservice</a>
+<ul>
+<li><a href="#orgheadline22">7.4.1. Code</a></li>
+<li><a href="#orgheadline23">7.4.2. Test</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline26">7.5. API Interface</a>
+<ul>
+<li><a href="#orgheadline25">7.5.1. Error Codes</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline27">7.6. Access Management</a></li>
+<li><a href="#orgheadline28">7.7. Application Code</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline33">8. System Integration</a>
+<ul>
+<li><a href="#orgheadline30">8.1. Systemd</a></li>
+<li><a href="#orgheadline32">8.2. Monitoring</a>
+<ul>
+<li><a href="#orgheadline31">8.2.1. Toggle</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline34">9. Environment Variables</a></li>
+<li><a href="#orgheadline35">10. Test Suite</a></li>
+<li><a href="#orgheadline36">11. Build</a></li>
+<li><a href="#orgheadline42">12. Provision</a>
+<ul>
+<li><a href="#orgheadline37">12.1. <span class="todo TODO">TODO</span> Appliance (App + Packer Image)</a></li>
+<li><a href="#orgheadline38">12.2. <span class="todo TODO">TODO</span> Docker Image</a></li>
+<li><a href="#orgheadline39">12.3. <span class="todo TODO">TODO</span> Platform Runtime Orchestration</a></li>
+<li><a href="#orgheadline40">12.4. <span class="todo TODO">TODO</span> SSL</a></li>
+<li><a href="#orgheadline41">12.5. <span class="todo TODO">TODO</span> Reverse Proxy</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline44">13. Release</a>
+<ul>
+<li><a href="#orgheadline43">13.1. Push</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline53">14. Deployment</a>
+<ul>
+<li><a href="#orgheadline52">14.1. <span class="todo TODO">TODO</span> Package</a>
+<ul>
+<li><a href="#orgheadline45">14.1.1. logging/rotation</a></li>
+<li><a href="#orgheadline46">14.1.2. pid</a></li>
+<li><a href="#orgheadline47">14.1.3. system user</a></li>
+<li><a href="#orgheadline48">14.1.4. group</a></li>
+<li><a href="#orgheadline49">14.1.5. var/data</a></li>
+<li><a href="#orgheadline50">14.1.6. auditing</a></li>
+<li><a href="#orgheadline51">14.1.7. software defined storage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline58">15. Continuous Delivery /Continuous Integration</a>
+<ul>
+<li><a href="#orgheadline54">15.1. built-in api devops endpoint</a></li>
+<li><a href="#orgheadline55">15.2. sites-available</a></li>
+<li><a href="#orgheadline56">15.3. sites-enabled</a></li>
+<li><a href="#orgheadline57">15.4. restart</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline60">16. Appendix A:   DevOps Document Overview</a>
+<ul>
+<li><a href="#orgheadline59">16.1. Features</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline61">17. Appendex B: System 3rd Party Dependencies/Requirements</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> Program Descriptions</h2>
+</div>
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> Usage</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+This application provides a simple REST inspired service to divide a character string into odd and
+even arrays and then join the arrays back into the original charter string.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3"><span class="section-number-2">3</span> Summary</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock1"><span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">INITIALIZATION</span>
+<span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">ctx</span> = {};
+
+<span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">state</span> = {
+    register=&gt;$<span style="color: #D8FA3C;">ENV</span>{<span style="color: #61CE3C;">"register_url"</span>} || app-&gt;config(<span style="color: #61CE3C;">'register_url'</span>),
+    auth=&gt;$<span style="color: #D8FA3C;">ENV</span>{<span style="color: #61CE3C;">"auth_url"</span>} || app-&gt;config(<span style="color: #61CE3C;">'auth_url'</span>),
+    app_name=&gt;$<span style="color: #D8FA3C;">ENV</span>{<span style="color: #61CE3C;">"app_name"</span>} || app-&gt;config(<span style="color: #61CE3C;">'name'</span>),
+    status=&gt;<span style="color: #61CE3C;">'stopped'</span>,
+    cfgs=&gt;app-&gt;config
+};
+
+<span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">run</span> = <span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">s</span> = shift || $<span style="color: #D8FA3C;">state</span>;
+    <span style="color: #FBDE2D; font-weight: bold;">return</span> <span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+        $<span style="color: #D8FA3C;">s</span>-&gt;{status}=<span style="color: #61CE3C;">'start'</span>;
+        app-&gt;log-&gt;debug(<span style="color: #61CE3C;">"starting"</span>);
+        get <span style="color: #61CE3C;">'/'</span>=&gt;<span style="color: #61CE3C;">'with_config'</span>;
+        $<span style="color: #D8FA3C;">s</span>-&gt;{status}=<span style="color: #61CE3C;">'running'</span>;
+        <span style="color: #FBDE2D; font-weight: bold;">return</span> {state=&gt;$<span style="color: #D8FA3C;">s</span>};
+    };
+};
+
+<span style="color: #FBDE2D; font-weight: bold;">sub</span> <span style="color: #ff1493;">cli</span> {
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">process</span> = $<span style="color: #D8FA3C;">run</span>-&gt;($<span style="color: #D8FA3C;">state</span>)-&gt;($<span style="color: #D8FA3C;">ctx</span>);
+    app-&gt;start;
+}
+
+cli() <span style="color: #FBDE2D; font-weight: bold;">unless</span> caller();
+1;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline15" class="outline-2">
+<h2 id="orgheadline15"><span class="section-number-2">4</span> Application specification</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+<a href="file:///home/mburns/Downloads/backend_coding_exercise.pdf">Coding Exercise Specification</a>
+</p>
+</div>
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">4.1</span> General Requirements</h3>
+<div class="outline-text-3" id="text-4-1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Spec ID</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">G0</td>
+<td class="org-left">Create valid credentials via register service <a href="https://interview-api.shiftboard.com/auth">https://interview-api.shiftboard.com/auth</a></td>
+</tr>
+
+<tr>
+<td class="org-left">G1</td>
+<td class="org-left">All requests must include basic auth.</td>
+</tr>
+
+<tr>
+<td class="org-left">G2</td>
+<td class="org-left">Validated against at auth service <a href="https://interview-api.shiftboard.com/auth">https://interview-api.shiftboard.com/auth</a>.</td>
+</tr>
+
+<tr>
+<td class="org-left">G3</td>
+<td class="org-left">Unsuccessful attempts return 401</td>
+</tr>
+
+<tr>
+<td class="org-left">G4</td>
+<td class="org-left">POSTs are a JSON formated object</td>
+</tr>
+
+<tr>
+<td class="org-left">G5</td>
+<td class="org-left">Required SHA1 posted content digest query parameter, signature, return 403 if  invalid</td>
+</tr>
+
+<tr>
+<td class="org-left">G6</td>
+<td class="org-left">Missing parameters return 422</td>
+</tr>
+
+<tr>
+<td class="org-left">G7</td>
+<td class="org-left">Operate in a non-sticky, load balanced environment.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><span class="section-number-3">4.2</span> API Endpoint Function Requirements</h3>
+<div class="outline-text-3" id="text-4-2">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Spec ID</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">F1</td>
+<td class="org-left">Split string into even and odd character arrays, Assume first character 1, is odd.</td>
+</tr>
+
+<tr>
+<td class="org-left">F2</td>
+<td class="org-left">The user/pass will successfully authenticate against <a href="https://interview-api.shiftboard.com/auth">https://interview-api.shiftboard.com/auth</a>.</td>
+</tr>
+
+<tr>
+<td class="org-left">F3</td>
+<td class="org-left">Last result depending on method called last</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><span class="section-number-3">4.3</span> F1 - Split string into even and odd character arrays, Assume first character 1, is odd</h3>
+<div class="outline-text-3" id="text-4-3">
+<ul class="org-ul">
+<li>Input: JSON object key "string" contains string.</li>
+<li>Output: JSON object keys odd and even each an array of characters.</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh">curl -X POST -u USER:PASS <span style="color: #61CE3C;">\</span>
+</pre>
+</div>
+<p>
+Example        Response:
+{"odd":["s","l","t","m"], "even":["p","i"," ","e"]}
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-restclient"><span style="color: #FBDE2D; font-weight: bold;">POST</span> <span style="color: #ff1493;">http://localhost:3000/split?signature=04e74f3b8cfcf0b502ff701a9b5f0b98ece0d3b4</span>
+<span style="color: #D8FA3C;">Accept</span>: <span style="color: #61CE3C;">application/json</span>
+
+{<span style="color: #61CE3C;">"string"</span>:<span style="color: #61CE3C;">"split me"</span>}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6"><span class="section-number-4">4.3.1</span> Code</h4>
+<div class="outline-text-4" id="text-4-3-1">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock2">    post <span style="color: #61CE3C;">'/split'</span>=&gt;<span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+        <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span>  = shift;
+        <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">split</span> = apart($<span style="color: #D8FA3C;">c</span>-&gt;req-&gt;json-&gt;{string}) || undef;
+        <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;{message=&gt;<span style="color: #61CE3C;">"Parameter Invalid"</span>})-&gt;rendered(422)
+          <span style="color: #FBDE2D; font-weight: bold;">unless</span> $<span style="color: #D8FA3C;">split</span>;
+        $<span style="color: #D8FA3C;">c</span>-&gt;session(<span style="color: #61CE3C;">'returned_last'</span>=&gt;$<span style="color: #D8FA3C;">split</span>);
+        <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;$<span style="color: #D8FA3C;">split</span>)-&gt;rendered(200);
+    };
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9"><span class="section-number-3">4.4</span> F2 - join undo split</h3>
+<div class="outline-text-3" id="text-4-4">
+<ul class="org-ul">
+<li>INPUT: {"odd":["s","l","t","m"], "even":["p","i"," ","e"]}</li>
+<li>OUTPUT: {"string":"split me"}</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh">curl -X POST -u USER:PASS <span style="color: #61CE3C;">\</span>
+http://localhost:3000/join?<span style="color: #D8FA3C;">signature</span>=6edd74450aa9206c4ba0b8c009de382a3e91f404 <span style="color: #61CE3C;">\</span>
+-d <span style="color: #61CE3C;">'{"odd":["s","l","t","m"], "even":["p","i"," ","e"]}'</span>
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-restclient"><span style="color: #FBDE2D; font-weight: bold;">POST</span> <span style="color: #ff1493;">http://localhost:3000/join?signature=6edd74450aa9206c4ba0b8c009de382a3e91f404</span>
+<span style="color: #D8FA3C;">Accept</span>: <span style="color: #61CE3C;">application/json</span>
+
+{<span style="color: #61CE3C;">"odd"</span>:[<span style="color: #61CE3C;">"s"</span>,<span style="color: #61CE3C;">"l"</span>,<span style="color: #61CE3C;">"t"</span>,<span style="color: #61CE3C;">"m"</span>], <span style="color: #61CE3C;">"even"</span>:[<span style="color: #61CE3C;">"p"</span>,<span style="color: #61CE3C;">"i"</span>,<span style="color: #61CE3C;">" "</span>,<span style="color: #61CE3C;">"e"</span>]}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8"><span class="section-number-4">4.4.1</span> Code</h4>
+<div class="outline-text-4" id="text-4-4-1">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock3">    post <span style="color: #61CE3C;">'/join'</span>=&gt;<span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+        <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span>  = shift;
+        <span style="color: #D8FA3C; font-weight: bold;">my</span> ($<span style="color: #D8FA3C;">odd</span>, $<span style="color: #D8FA3C;">even</span>) =  @{$<span style="color: #D8FA3C;">c</span>-&gt;req-&gt;json}{qw<span style="color: #61CE3C;">(odd even)</span>} || undef;
+        <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">join</span> = together($<span style="color: #D8FA3C;">odd</span>, $<span style="color: #D8FA3C;">even</span>);
+        <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;{message=&gt;<span style="color: #61CE3C;">"Parameter required"</span>})-&gt;rendered(422)
+          <span style="color: #FBDE2D; font-weight: bold;">unless</span> $<span style="color: #D8FA3C;">join</span>;
+        $<span style="color: #D8FA3C;">c</span>-&gt;session(<span style="color: #61CE3C;">'returned_last'</span>=&gt;$<span style="color: #D8FA3C;">join</span>);
+        <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;$<span style="color: #D8FA3C;">join</span>)-&gt;rendered(200);
+    };
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">4.5</span> F3 - Last result</h3>
+<div class="outline-text-3" id="text-4-5">
+<ul class="org-ul">
+<li>INPUT: {}</li>
+<li>OUTPUT: [{"string":"split me"} || {"odd":["s","l","t","m"], "even":["p","i"," ","e"]}]</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh">curl -X POST -u USER:PASS <span style="color: #61CE3C;">\</span>
+http://localhost:3000/join?<span style="color: #D8FA3C;">signature</span>=6edd74450aa9206c4ba0b8c009de382a3e91f404 <span style="color: #61CE3C;">\</span>
+-d <span style="color: #61CE3C;">'{"odd":["s","l","t","m"], "even":["p","i"," ","e"]}'</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-restclient"><span style="color: #FBDE2D; font-weight: bold;">POST</span> <span style="color: #ff1493;">http://localhost:3000/lastResult</span>
+<span style="color: #D8FA3C;">Accept</span>: <span style="color: #61CE3C;">application/json</span>
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10"><span class="section-number-4">4.5.1</span> Test</h4>
+</div>
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11"><span class="section-number-4">4.5.2</span> Code</h4>
+<div class="outline-text-4" id="text-4-5-2">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock4">get <span style="color: #61CE3C;">'/lastResponse'</span>=&gt;<span style="color: #FBDE2D; font-weight: bold;">sub</span> {$<span style="color: #D8FA3C;">_</span>[0]-&gt;render(json=&gt;$<span style="color: #D8FA3C;">_</span>[0]-&gt;session(<span style="color: #61CE3C;">'returned_last'</span>))-&gt;rendered(200)};
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13"><span class="section-number-3">4.6</span> API Tests</h3>
+<div class="outline-text-3" id="text-4-6">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock5">    $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/join'</span>);
+    $<span style="color: #D8FA3C;">t</span>-&gt;post_ok($<span style="color: #D8FA3C;">url</span>=&gt;json=&gt;$<span style="color: #D8FA3C;">test_data</span>)-&gt;status_is(200);
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/split'</span>);
+    $<span style="color: #D8FA3C;">url</span>-&gt;query({signature =&gt; $<span style="color: #D8FA3C;">good_signature</span>});
+    $<span style="color: #D8FA3C;">t</span>-&gt;post_ok($<span style="color: #D8FA3C;">url</span>=&gt;json=&gt;$<span style="color: #D8FA3C;">test_data</span>)-&gt;status_is(200);
+    $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/lastResult'</span>);
+    $<span style="color: #D8FA3C;">t</span>-&gt;post_ok($<span style="color: #D8FA3C;">url</span>=&gt;json=&gt;$<span style="color: #D8FA3C;">test_data</span>)-&gt;status_is(200);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14"><span class="section-number-3">4.7</span> G1</h3>
+<div class="outline-text-3" id="text-4-7">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock6"></pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-2">
+<h2 id="orgheadline17"><span class="section-number-2">5</span> Dev Tools</h2>
+<div class="outline-text-2" id="text-5">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock7">any <span style="color: #61CE3C;">'/'</span> =&gt; <span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #8B8989; font-style: italic;"># Main login action</span>
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span> = shift;
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> ($<span style="color: #D8FA3C;">u</span>, $<span style="color: #D8FA3C;">p</span>) = split(<span style="color: #61CE3C;">':'</span>,  $<span style="color: #D8FA3C;">c</span>-&gt;req-&gt;url-&gt;to_abs-&gt;userinfo);
+    $<span style="color: #D8FA3C;">u</span> =  $<span style="color: #D8FA3C;">c</span>-&gt;param(<span style="color: #61CE3C;">'username'</span>) || $<span style="color: #D8FA3C;">u</span>;
+    $<span style="color: #D8FA3C;">p</span> = $<span style="color: #D8FA3C;">c</span>-&gt;param(<span style="color: #61CE3C;">'password'</span>) || $<span style="color: #D8FA3C;">p</span>;
+
+    <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render
+      <span style="color: #FBDE2D; font-weight: bold;">unless</span> $<span style="color: #D8FA3C;">c</span>-&gt;ua-&gt;get(Mojo::URL-&gt;new($<span style="color: #D8FA3C;">ENV</span>{<span style="color: #61CE3C;">"auth_url"</span>} || app-&gt;config(<span style="color: #61CE3C;">'auth_url'</span>))
+                                        -&gt;query({username=&gt;$<span style="color: #D8FA3C;">u</span>, password=&gt;$<span style="color: #D8FA3C;">p</span>})
+                                        =&gt; {Accept=&gt;<span style="color: #61CE3C;">'application/json'</span>})-&gt;res == 200;
+    $<span style="color: #D8FA3C;">c</span>-&gt;session(user=&gt;$<span style="color: #D8FA3C;">u</span>);
+    $<span style="color: #D8FA3C;">c</span>-&gt;session(config=&gt;app-&gt;config);
+    $<span style="color: #D8FA3C;">c</span>-&gt;flash(message=&gt;<span style="color: #61CE3C;">'authenticated'</span>);
+    $<span style="color: #D8FA3C;">c</span>-&gt;redirect_to(<span style="color: #61CE3C;">'protected'</span>);
+} =&gt; <span style="color: #61CE3C;">'index'</span>;
+
+group { <span style="color: #8B8989; font-style: italic;"># logged in user actions</span>
+    under <span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+        <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span> = shift;
+        <span style="color: #FBDE2D; font-weight: bold;">return</span> 1 <span style="color: #FBDE2D; font-weight: bold;">if</span> $<span style="color: #D8FA3C;">c</span>-&gt;session(<span style="color: #61CE3C;">'user'</span>)-&gt;redirect_to(<span style="color: #61CE3C;">'index'</span>);
+        <span style="color: #FBDE2D; font-weight: bold;">return</span> undef;
+    };
+    get <span style="color: #61CE3C;">'/protected'</span>;
+};
+
+get <span style="color: #61CE3C;">'/logout'</span> =&gt; <span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #8B8989; font-style: italic;"># Logout action</span>
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span> = shift;
+    $<span style="color: #D8FA3C;">c</span>-&gt;session(expires =&gt; 1);
+    $<span style="color: #D8FA3C;">c</span>-&gt;redirect_to(<span style="color: #61CE3C;">'index'</span>);
+};
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16"><span class="section-number-3">5.1</span> dependencies</h3>
+</div>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18"><span class="section-number-2">6</span> Configuration</h2>
+<div class="outline-text-2" id="text-6">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock8">{
+ auth_url =&gt; <span style="color: #61CE3C;">'https://interview-api.shiftboard.com/auth'</span>,
+ name =&gt; <span style="color: #61CE3C;">'partition_combiner'</span>,
+ register_url =&gt; <span style="color: #61CE3C;">'https://interview-api.shiftboard.com/register'</span>
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline29" class="outline-2">
+<h2 id="orgheadline29"><span class="section-number-2">7</span> Application  Logic</h2>
+<div class="outline-text-2" id="text-7">
+</div><div id="outline-container-orgheadline19" class="outline-3">
+<h3 id="orgheadline19"><span class="section-number-3">7.1</span> F1</h3>
+<div class="outline-text-3" id="text-7-1">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock9"><span style="color: #FBDE2D; font-weight: bold;">sub</span> <span style="color: #ff1493;">together</span> {
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> ($<span style="color: #D8FA3C;">odd</span>, $<span style="color: #D8FA3C;">even</span>) = @<span style="color: #D8FA3C;">_</span>;
+    <span style="color: #FBDE2D; font-weight: bold;">return</span> undef <span style="color: #FBDE2D; font-weight: bold;">unless</span> scalar @$<span style="color: #D8FA3C;">odd</span> &gt; 0 &amp;&amp; scalar @$<span style="color: #D8FA3C;">even</span> &gt; 0;
+    <span style="color: #FBDE2D; font-weight: bold;">return</span> join <span style="color: #61CE3C;">''</span>, zip(@$<span style="color: #D8FA3C;">odd</span>, @$<span style="color: #D8FA3C;">even</span>);
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20"><span class="section-number-3">7.2</span> F2</h3>
+<div class="outline-text-3" id="text-7-2">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock10"><span style="color: #FBDE2D; font-weight: bold;">sub</span> <span style="color: #ff1493;">apart</span> {
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> @<span style="color: #D8FA3C;">array</span> = split(<span style="color: #61CE3C;">''</span>, $<span style="color: #D8FA3C;">_</span>[0]);
+    <span style="color: #FBDE2D; font-weight: bold;">return</span> undef
+      <span style="color: #FBDE2D; font-weight: bold;">unless</span> scalar @<span style="color: #D8FA3C;">array</span> &gt; 0;
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> @<span style="color: #D8FA3C;">odd</span> = map {<span style="color: #61CE3C;">"$_"</span>} @<span style="color: #D8FA3C;">array</span>[grep {!($<span style="color: #D8FA3C;">_</span> &amp; 1)} 0..$#<span style="color: #D8FA3C;">array</span>]; <span style="color: #8B8989; font-style: italic;"># bitwise AND array position select odd</span>
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> @<span style="color: #D8FA3C;">even</span> = map {<span style="color: #61CE3C;">"$_"</span>} @<span style="color: #D8FA3C;">array</span>[grep {($<span style="color: #D8FA3C;">_</span> &amp; 1)} 0..$#<span style="color: #D8FA3C;">array</span>]; <span style="color: #8B8989; font-style: italic;"># invert logic to take even</span>
+    <span style="color: #FBDE2D; font-weight: bold;">return</span> {even =&gt; \@<span style="color: #D8FA3C;">even</span>, odd =&gt; \@<span style="color: #D8FA3C;">odd</span>};
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline21" class="outline-3">
+<h3 id="orgheadline21"><span class="section-number-3">7.3</span> F3</h3>
+<div class="outline-text-3" id="text-7-3">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock11">get <span style="color: #61CE3C;">'/lastResponse'</span>=&gt;<span style="color: #FBDE2D; font-weight: bold;">sub</span> {$<span style="color: #D8FA3C;">_</span>[0]-&gt;render(json=&gt;$<span style="color: #D8FA3C;">_</span>[0]-&gt;session(<span style="color: #61CE3C;">'returned_last'</span>))-&gt;rendered(200)};
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline24" class="outline-3">
+<h3 id="orgheadline24"><span class="section-number-3">7.4</span> Basic Authentication using webservice</h3>
+<div class="outline-text-3" id="text-7-4">
+</div><div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22"><span class="section-number-4">7.4.1</span> Code</h4>
+<div class="outline-text-4" id="text-7-4-1">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock12">under(<span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span> = shift; <span style="color: #8B8989; font-style: italic;"># Basic Authentication for each request</span>
+            <span style="color: #D8FA3C; font-weight: bold;">my</span> ($<span style="color: #D8FA3C;">username</span>, $<span style="color: #D8FA3C;">password</span>) = split(<span style="color: #61CE3C;">':'</span>,  $<span style="color: #D8FA3C;">c</span>-&gt;req-&gt;url-&gt;to_abs-&gt;userinfo);
+            $<span style="color: #D8FA3C;">c</span>-&gt;ua-&gt;get(Mojo::URL-&gt;new($<span style="color: #D8FA3C;">ENV</span>{<span style="color: #61CE3C;">"auth_url"</span>} || app-&gt;config(<span style="color: #61CE3C;">'auth_url'</span>))
+                        -&gt;query({username=&gt;$<span style="color: #D8FA3C;">username</span>, password=&gt;$<span style="color: #D8FA3C;">password</span>})
+                        =&gt; {Accept=&gt;<span style="color: #61CE3C;">'application/json'</span>})-&gt;res == 200
+                        ? <span style="color: #FBDE2D; font-weight: bold;">return</span> 1
+                        : <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;{message=&gt;<span style="color: #61CE3C;">"Invalid"</span>})-&gt;rendered(401)});
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline23" class="outline-4">
+<h4 id="orgheadline23"><span class="section-number-4">7.4.2</span> Test</h4>
+<div class="outline-text-4" id="text-7-4-2">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock13">subtest <span style="color: #61CE3C;">'testing registered authentication'</span> =&gt; <span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+    plan tests =&gt; 2;
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">module</span> = Test::MockModule-&gt;new(<span style="color: #61CE3C;">'Audition::WebService'</span>);
+    $<span style="color: #D8FA3C;">module</span>-&gt;mock(<span style="color: #61CE3C;">'apart'</span>, <span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">desired_apart</span> });
+    $<span style="color: #D8FA3C;">module</span>-&gt;mock(<span style="color: #61CE3C;">'together'</span>, <span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">desired_together</span> });
+    Module::Name::subroutine(@<span style="color: #D8FA3C;">args</span>);
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/split'</span>);
+    $<span style="color: #D8FA3C;">url</span>-&gt;query({signature =&gt; $<span style="color: #D8FA3C;">good_signature</span>});
+    $<span style="color: #D8FA3C;">t</span>-&gt;post_ok($<span style="color: #D8FA3C;">url</span>=&gt;json=&gt;$<span style="color: #D8FA3C;">test_data</span>)-&gt;status_is(200);
+    $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/join'</span>);
+    $<span style="color: #D8FA3C;">t</span>-&gt;post_ok($<span style="color: #D8FA3C;">url</span>=&gt;json=&gt;$<span style="color: #D8FA3C;">test_data</span>)-&gt;status_is(200);
+    $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/lastResult'</span>);
+    $<span style="color: #D8FA3C;">t</span>-&gt;post_ok($<span style="color: #D8FA3C;">url</span>=&gt;json=&gt;$<span style="color: #D8FA3C;">test_data</span>)-&gt;status_is(200);
+};
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline26" class="outline-3">
+<h3 id="orgheadline26"><span class="section-number-3">7.5</span> API Interface</h3>
+<div class="outline-text-3" id="text-7-5">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock14">        post <span style="color: #61CE3C;">'/split'</span>=&gt;<span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+            <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span>  = shift;
+            <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">split</span> = apart($<span style="color: #D8FA3C;">c</span>-&gt;req-&gt;json-&gt;{string}) || undef;
+            <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;{message=&gt;<span style="color: #61CE3C;">"Parameter Invalid"</span>})-&gt;rendered(422)
+              <span style="color: #FBDE2D; font-weight: bold;">unless</span> $<span style="color: #D8FA3C;">split</span>;
+            $<span style="color: #D8FA3C;">c</span>-&gt;session(<span style="color: #61CE3C;">'returned_last'</span>=&gt;$<span style="color: #D8FA3C;">split</span>);
+            <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;$<span style="color: #D8FA3C;">split</span>)-&gt;rendered(200);
+        };
+        post <span style="color: #61CE3C;">'/join'</span>=&gt;<span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+            <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span>  = shift;
+            <span style="color: #D8FA3C; font-weight: bold;">my</span> ($<span style="color: #D8FA3C;">odd</span>, $<span style="color: #D8FA3C;">even</span>) =  @{$<span style="color: #D8FA3C;">c</span>-&gt;req-&gt;json}{qw<span style="color: #61CE3C;">(odd even)</span>} || undef;
+            <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">join</span> = together($<span style="color: #D8FA3C;">odd</span>, $<span style="color: #D8FA3C;">even</span>);
+            <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;{message=&gt;<span style="color: #61CE3C;">"Parameter required"</span>})-&gt;rendered(422)
+              <span style="color: #FBDE2D; font-weight: bold;">unless</span> $<span style="color: #D8FA3C;">join</span>;
+            $<span style="color: #D8FA3C;">c</span>-&gt;session(<span style="color: #61CE3C;">'returned_last'</span>=&gt;$<span style="color: #D8FA3C;">join</span>);
+            <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;$<span style="color: #D8FA3C;">join</span>)-&gt;rendered(200);
+        };
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline25" class="outline-4">
+<h4 id="orgheadline25"><span class="section-number-4">7.5.1</span> Error Codes</h4>
+<div class="outline-text-4" id="text-7-5-1">
+<ul class="org-ul">
+<li>Application Functionality: return 401 on unsuccessful auth</li>
+<li>Application Functionality: return 403 on invalid sha1</li>
+<li>Application Functionality: return 422 on missing parameters</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline27" class="outline-3">
+<h3 id="orgheadline27"><span class="section-number-3">7.6</span> Access Management</h3>
+<div class="outline-text-3" id="text-7-6">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock15">   under <span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #8B8989; font-style: italic;"># Valid API Requirement Assertions</span>
+       <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span> = shift;
+       <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">signature</span> = $<span style="color: #D8FA3C;">c</span>-&gt;param(<span style="color: #61CE3C;">'signature'</span>) || undef;
+       <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">string</span> =  $<span style="color: #D8FA3C;">c</span>-&gt;req-&gt;json-&gt;{string} || undef;
+       <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;{message=&gt;<span style="color: #61CE3C;">"Parameter required)"</span>})-&gt;rendered(422)
+         <span style="color: #FBDE2D; font-weight: bold;">unless</span> $<span style="color: #D8FA3C;">string</span>;
+       <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;{message=&gt;<span style="color: #61CE3C;">"Checksum failure"</span>})-&gt;rendered(403)
+         <span style="color: #FBDE2D; font-weight: bold;">unless</span> $<span style="color: #D8FA3C;">signature</span> &amp;&amp; ($<span style="color: #D8FA3C;">signature</span> eq sha1($<span style="color: #D8FA3C;">string</span>));
+   };
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline28" class="outline-3">
+<h3 id="orgheadline28"><span class="section-number-3">7.7</span> Application Code</h3>
+<div class="outline-text-3" id="text-7-7">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock16"><span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">strict</span>;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">warnings</span>;
+
+<span style="color: #FBDE2D; font-weight: bold;">package</span> <span style="color: #ff1493;">Audition</span>::WebService;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Digest</span>::SHA qw<span style="color: #61CE3C;">(sha1)</span>;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">List</span>::MoreUtils qw<span style="color: #61CE3C;">(zip)</span>;
+<span style="color: #8B8989; font-style: italic;">#</span><span style="color: #8B8989; font-style: italic;">use Mojolicious::Lite;</span>
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Mojo</span>::Base <span style="color: #61CE3C;">"Mojolicious"</span>;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Mojo</span>::URL;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Mojo</span>::Util qw<span style="color: #61CE3C;">(secure_compare)</span>;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Riemann</span>::Client;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">sigtrap</span> qw<span style="color: #61CE3C;">/handler signal_handler normal-signals/</span>;
+
+<span style="color: #FBDE2D; font-weight: bold;">sub</span> <span style="color: #ff1493;">startup</span> {
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">app</span> = shift;
+    $<span style="color: #D8FA3C;">app</span>-&gt;plugin(Swagger2 =&gt; {url =&gt; <span style="color: #61CE3C;">"data://Audition::WebService/api.json"</span>});
+  }
+
+plugin <span style="color: #61CE3C;">'Config'</span>;
+
+<span style="color: #FBDE2D; font-weight: bold;">sub</span> <span style="color: #ff1493;">together</span> {
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> ($<span style="color: #D8FA3C;">odd</span>, $<span style="color: #D8FA3C;">even</span>) = @<span style="color: #D8FA3C;">_</span>;
+    <span style="color: #FBDE2D; font-weight: bold;">return</span> undef <span style="color: #FBDE2D; font-weight: bold;">unless</span> scalar @$<span style="color: #D8FA3C;">odd</span> &gt; 0 &amp;&amp; scalar @$<span style="color: #D8FA3C;">even</span> &gt; 0;
+    <span style="color: #FBDE2D; font-weight: bold;">return</span> join <span style="color: #61CE3C;">''</span>, zip(@$<span style="color: #D8FA3C;">odd</span>, @$<span style="color: #D8FA3C;">even</span>);
+}
+<span style="color: #FBDE2D; font-weight: bold;">sub</span> <span style="color: #ff1493;">apart</span> {
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> @<span style="color: #D8FA3C;">array</span> = split(<span style="color: #61CE3C;">''</span>, $<span style="color: #D8FA3C;">_</span>[0]);
+    <span style="color: #FBDE2D; font-weight: bold;">return</span> undef
+      <span style="color: #FBDE2D; font-weight: bold;">unless</span> scalar @<span style="color: #D8FA3C;">array</span> &gt; 0;
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> @<span style="color: #D8FA3C;">odd</span> = map {<span style="color: #61CE3C;">"$_"</span>} @<span style="color: #D8FA3C;">array</span>[grep {!($<span style="color: #D8FA3C;">_</span> &amp; 1)} 0..$#<span style="color: #D8FA3C;">array</span>]; <span style="color: #8B8989; font-style: italic;"># bitwise AND array position select odd</span>
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> @<span style="color: #D8FA3C;">even</span> = map {<span style="color: #61CE3C;">"$_"</span>} @<span style="color: #D8FA3C;">array</span>[grep {($<span style="color: #D8FA3C;">_</span> &amp; 1)} 0..$#<span style="color: #D8FA3C;">array</span>]; <span style="color: #8B8989; font-style: italic;"># invert logic to take even</span>
+    <span style="color: #FBDE2D; font-weight: bold;">return</span> {even =&gt; \@<span style="color: #D8FA3C;">even</span>, odd =&gt; \@<span style="color: #D8FA3C;">odd</span>};
+}
+under(<span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span> = shift; <span style="color: #8B8989; font-style: italic;"># Basic Authentication for each request</span>
+            <span style="color: #D8FA3C; font-weight: bold;">my</span> ($<span style="color: #D8FA3C;">username</span>, $<span style="color: #D8FA3C;">password</span>) = split(<span style="color: #61CE3C;">':'</span>,  $<span style="color: #D8FA3C;">c</span>-&gt;req-&gt;url-&gt;to_abs-&gt;userinfo);
+            $<span style="color: #D8FA3C;">c</span>-&gt;ua-&gt;get(Mojo::URL-&gt;new($<span style="color: #D8FA3C;">ENV</span>{<span style="color: #61CE3C;">"auth_url"</span>} || app-&gt;config(<span style="color: #61CE3C;">'auth_url'</span>))
+                        -&gt;query({username=&gt;$<span style="color: #D8FA3C;">username</span>, password=&gt;$<span style="color: #D8FA3C;">password</span>})
+                        =&gt; {Accept=&gt;<span style="color: #61CE3C;">'application/json'</span>})-&gt;res == 200
+                        ? <span style="color: #FBDE2D; font-weight: bold;">return</span> 1
+                        : <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;{message=&gt;<span style="color: #61CE3C;">"Invalid"</span>})-&gt;rendered(401)});
+
+group {
+        under <span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #8B8989; font-style: italic;"># Valid API Requirement Assertions</span>
+            <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span> = shift;
+            <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">signature</span> = $<span style="color: #D8FA3C;">c</span>-&gt;param(<span style="color: #61CE3C;">'signature'</span>) || undef;
+            <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">string</span> =  $<span style="color: #D8FA3C;">c</span>-&gt;req-&gt;json-&gt;{string} || undef;
+            <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;{message=&gt;<span style="color: #61CE3C;">"Parameter required)"</span>})-&gt;rendered(422)
+              <span style="color: #FBDE2D; font-weight: bold;">unless</span> $<span style="color: #D8FA3C;">string</span>;
+            <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;{message=&gt;<span style="color: #61CE3C;">"Checksum failure"</span>})-&gt;rendered(403)
+              <span style="color: #FBDE2D; font-weight: bold;">unless</span> $<span style="color: #D8FA3C;">signature</span> &amp;&amp; ($<span style="color: #D8FA3C;">signature</span> eq sha1($<span style="color: #D8FA3C;">string</span>));
+        };
+
+            post <span style="color: #61CE3C;">'/split'</span>=&gt;<span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+                <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span>  = shift;
+                <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">split</span> = apart($<span style="color: #D8FA3C;">c</span>-&gt;req-&gt;json-&gt;{string}) || undef;
+                <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;{message=&gt;<span style="color: #61CE3C;">"Parameter Invalid"</span>})-&gt;rendered(422)
+                  <span style="color: #FBDE2D; font-weight: bold;">unless</span> $<span style="color: #D8FA3C;">split</span>;
+                $<span style="color: #D8FA3C;">c</span>-&gt;session(<span style="color: #61CE3C;">'returned_last'</span>=&gt;$<span style="color: #D8FA3C;">split</span>);
+                <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;$<span style="color: #D8FA3C;">split</span>)-&gt;rendered(200);
+            };
+            post <span style="color: #61CE3C;">'/join'</span>=&gt;<span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+                <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span>  = shift;
+                <span style="color: #D8FA3C; font-weight: bold;">my</span> ($<span style="color: #D8FA3C;">odd</span>, $<span style="color: #D8FA3C;">even</span>) =  @{$<span style="color: #D8FA3C;">c</span>-&gt;req-&gt;json}{qw<span style="color: #61CE3C;">(odd even)</span>} || undef;
+                <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">join</span> = together($<span style="color: #D8FA3C;">odd</span>, $<span style="color: #D8FA3C;">even</span>);
+                <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;{message=&gt;<span style="color: #61CE3C;">"Parameter required"</span>})-&gt;rendered(422)
+                  <span style="color: #FBDE2D; font-weight: bold;">unless</span> $<span style="color: #D8FA3C;">join</span>;
+                $<span style="color: #D8FA3C;">c</span>-&gt;session(<span style="color: #61CE3C;">'returned_last'</span>=&gt;$<span style="color: #D8FA3C;">join</span>);
+                <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render(json=&gt;$<span style="color: #D8FA3C;">join</span>)-&gt;rendered(200);
+            };
+
+};
+
+any <span style="color: #61CE3C;">'/'</span> =&gt; <span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #8B8989; font-style: italic;"># Main login action</span>
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span> = shift;
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> ($<span style="color: #D8FA3C;">u</span>, $<span style="color: #D8FA3C;">p</span>) = split(<span style="color: #61CE3C;">':'</span>,  $<span style="color: #D8FA3C;">c</span>-&gt;req-&gt;url-&gt;to_abs-&gt;userinfo);
+    $<span style="color: #D8FA3C;">u</span> =  $<span style="color: #D8FA3C;">c</span>-&gt;param(<span style="color: #61CE3C;">'username'</span>) || $<span style="color: #D8FA3C;">u</span>;
+    $<span style="color: #D8FA3C;">p</span> = $<span style="color: #D8FA3C;">c</span>-&gt;param(<span style="color: #61CE3C;">'password'</span>) || $<span style="color: #D8FA3C;">p</span>;
+
+    <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">c</span>-&gt;render
+      <span style="color: #FBDE2D; font-weight: bold;">unless</span> $<span style="color: #D8FA3C;">c</span>-&gt;ua-&gt;get(Mojo::URL-&gt;new($<span style="color: #D8FA3C;">ENV</span>{<span style="color: #61CE3C;">"auth_url"</span>} || app-&gt;config(<span style="color: #61CE3C;">'auth_url'</span>))
+                                        -&gt;query({username=&gt;$<span style="color: #D8FA3C;">u</span>, password=&gt;$<span style="color: #D8FA3C;">p</span>})
+                                        =&gt; {Accept=&gt;<span style="color: #61CE3C;">'application/json'</span>})-&gt;res == 200;
+    $<span style="color: #D8FA3C;">c</span>-&gt;session(user=&gt;$<span style="color: #D8FA3C;">u</span>);
+    $<span style="color: #D8FA3C;">c</span>-&gt;session(config=&gt;app-&gt;config);
+    $<span style="color: #D8FA3C;">c</span>-&gt;flash(message=&gt;<span style="color: #61CE3C;">'authenticated'</span>);
+    $<span style="color: #D8FA3C;">c</span>-&gt;redirect_to(<span style="color: #61CE3C;">'protected'</span>);
+} =&gt; <span style="color: #61CE3C;">'index'</span>;
+
+group { <span style="color: #8B8989; font-style: italic;"># logged in user actions</span>
+    under <span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+        <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span> = shift;
+        <span style="color: #FBDE2D; font-weight: bold;">return</span> 1 <span style="color: #FBDE2D; font-weight: bold;">if</span> $<span style="color: #D8FA3C;">c</span>-&gt;session(<span style="color: #61CE3C;">'user'</span>)-&gt;redirect_to(<span style="color: #61CE3C;">'index'</span>);
+        <span style="color: #FBDE2D; font-weight: bold;">return</span> undef;
+    };
+    get <span style="color: #61CE3C;">'/protected'</span>;
+};
+
+get <span style="color: #61CE3C;">'/logout'</span> =&gt; <span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #8B8989; font-style: italic;"># Logout action</span>
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">c</span> = shift;
+    $<span style="color: #D8FA3C;">c</span>-&gt;session(expires =&gt; 1);
+    $<span style="color: #D8FA3C;">c</span>-&gt;redirect_to(<span style="color: #61CE3C;">'index'</span>);
+};
+<span style="color: #FBDE2D; font-weight: bold;">sub</span> <span style="color: #ff1493;">handler</span> {   <span style="color: #8B8989; font-style: italic;"># 1st argument is signal name</span>
+        <span style="color: #D8FA3C; font-weight: bold;">my</span>($<span style="color: #D8FA3C;">sig</span>) = @<span style="color: #D8FA3C;">_</span>;
+        print <span style="color: #61CE3C;">"Caught a SIG$sig--shutting down\n"</span>;
+        close(LOG);
+        <span style="color: #FBDE2D; font-weight: bold;">exit</span>(0);
+        }
+
+<span style="color: #FBDE2D; font-weight: bold;">sub</span> <span style="color: #ff1493;">activate_monitor_signal</span> {
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">r</span> = Riemann::Client-&gt;new(
+        host =&gt; <span style="color: #61CE3C;">'localhost'</span>,
+        port =&gt; 5555,
+    );
+    $<span style="color: #D8FA3C;">r</span>-&gt;send({service =&gt; <span style="color: #61CE3C;">'api_metrics'</span>, metric =&gt; 2.5});
+
+    $<span style="color: #D8FA3C;">r</span>-&gt;send({
+        host    =&gt; Net::Domain::hostfqdn() || <span style="color: #61CE3C;">'api'</span>,
+        service =&gt; <span style="color: #61CE3C;">'partition_reduction'</span>,
+        state   =&gt; <span style="color: #61CE3C;">'active'</span>,
+        metric  =&gt; 1,
+        time    =&gt; time() - 10, <span style="color: #8B8989; font-style: italic;"># defaults to time()</span>
+        description =&gt; <span style="color: #61CE3C;">'1 api server actively reporting data from application.'</span>,
+    });
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">res</span> = $<span style="color: #D8FA3C;">r</span>-&gt;query(<span style="color: #61CE3C;">'true'</span>);     <span style="color: #8B8989; font-style: italic;"># Get all the states from the server</span>
+    $<span style="color: #D8FA3C;">res</span> = $<span style="color: #D8FA3C;">r</span>-&gt;query(<span style="color: #61CE3C;">'state = "active"'</span>);
+}
+
+$<span style="color: #D8FA3C;">SIG</span>{<span style="color: #61CE3C;">'INT'</span>}  = \&amp;<span style="color: #ff1493;">activate_monitor_signal</span>;
+$<span style="color: #D8FA3C;">SIG</span>{<span style="color: #61CE3C;">'QUIT'</span>} = \&amp;<span style="color: #ff1493;">handler</span>;
+    <span style="color: #8B8989; font-style: italic;"># host and port are optional</span>
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">INITIALIZATION</span>
+<span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">ctx</span> = {};
+
+<span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">state</span> = {
+    register=&gt;$<span style="color: #D8FA3C;">ENV</span>{<span style="color: #61CE3C;">"register_url"</span>} || app-&gt;config(<span style="color: #61CE3C;">'register_url'</span>),
+    auth=&gt;$<span style="color: #D8FA3C;">ENV</span>{<span style="color: #61CE3C;">"auth_url"</span>} || app-&gt;config(<span style="color: #61CE3C;">'auth_url'</span>),
+    app_name=&gt;$<span style="color: #D8FA3C;">ENV</span>{<span style="color: #61CE3C;">"app_name"</span>} || app-&gt;config(<span style="color: #61CE3C;">'name'</span>),
+    status=&gt;<span style="color: #61CE3C;">'stopped'</span>,
+    cfgs=&gt;app-&gt;config
+};
+
+<span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">run</span> = <span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">s</span> = shift || $<span style="color: #D8FA3C;">state</span>;
+    <span style="color: #FBDE2D; font-weight: bold;">return</span> <span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+        $<span style="color: #D8FA3C;">s</span>-&gt;{status}=<span style="color: #61CE3C;">'start'</span>;
+        app-&gt;log-&gt;debug(<span style="color: #61CE3C;">"starting"</span>);
+        get <span style="color: #61CE3C;">'/'</span>=&gt;<span style="color: #61CE3C;">'with_config'</span>;
+        $<span style="color: #D8FA3C;">s</span>-&gt;{status}=<span style="color: #61CE3C;">'running'</span>;
+        <span style="color: #FBDE2D; font-weight: bold;">return</span> {state=&gt;$<span style="color: #D8FA3C;">s</span>};
+    };
+};
+
+<span style="color: #FBDE2D; font-weight: bold;">sub</span> <span style="color: #ff1493;">cli</span> {
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">process</span> = $<span style="color: #D8FA3C;">run</span>-&gt;($<span style="color: #D8FA3C;">state</span>)-&gt;($<span style="color: #D8FA3C;">ctx</span>);
+    app-&gt;start;
+}
+
+cli() <span style="color: #FBDE2D; font-weight: bold;">unless</span> caller();
+1;
+
+  __DATA__
+  @@ together_apart.json
+  {
+    <span style="color: #61CE3C;">"swagger"</span>: <span style="color: #61CE3C;">"2.0"</span>,
+    <span style="color: #61CE3C;">"info"</span>: {...},
+    <span style="color: #61CE3C;">"host"</span>: <span style="color: #61CE3C;">"petstore.swagger.wordnik.com"</span>,
+    <span style="color: #61CE3C;">"basePath"</span>: <span style="color: #61CE3C;">"/api"</span>,
+    <span style="color: #61CE3C;">"paths"</span>: {
+      <span style="color: #61CE3C;">"/pets"</span>: {
+        <span style="color: #61CE3C;">"get"</span>: {...}
+      }
+    }
+  }
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline33" class="outline-2">
+<h2 id="orgheadline33"><span class="section-number-2">8</span> System Integration</h2>
+<div class="outline-text-2" id="text-8">
+</div><div id="outline-container-orgheadline30" class="outline-3">
+<h3 id="orgheadline30"><span class="section-number-3">8.1</span> Systemd</h3>
+<div class="outline-text-3" id="text-8-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">systemctl stop partition_combiner
+systemctl start partition_combiner
+systemctl status partition_combiner
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline32" class="outline-3">
+<h3 id="orgheadline32"><span class="section-number-3">8.2</span> Monitoring</h3>
+<div class="outline-text-3" id="text-8-2">
+</div><div id="outline-container-orgheadline31" class="outline-4">
+<h4 id="orgheadline31"><span class="section-number-4">8.2.1</span> Toggle</h4>
+<div class="outline-text-4" id="text-8-2-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">pgrep audition | <span style="color: #FF6400;">kill</span> 11
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock17"><span style="color: #FBDE2D; font-weight: bold;">sub</span> <span style="color: #ff1493;">handler</span> {   <span style="color: #8B8989; font-style: italic;"># 1st argument is signal name</span>
+        <span style="color: #D8FA3C; font-weight: bold;">my</span>($<span style="color: #D8FA3C;">sig</span>) = @<span style="color: #D8FA3C;">_</span>;
+        print <span style="color: #61CE3C;">"Caught a SIG$sig--shutting down\n"</span>;
+        close(LOG);
+        <span style="color: #FBDE2D; font-weight: bold;">exit</span>(0);
+        }
+
+<span style="color: #FBDE2D; font-weight: bold;">sub</span> <span style="color: #ff1493;">activate_monitor_signal</span> {
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">r</span> = Riemann::Client-&gt;new(
+        host =&gt; <span style="color: #61CE3C;">'localhost'</span>,
+        port =&gt; 5555,
+    );
+    $<span style="color: #D8FA3C;">r</span>-&gt;send({service =&gt; <span style="color: #61CE3C;">'api_metrics'</span>, metric =&gt; 2.5});
+
+    $<span style="color: #D8FA3C;">r</span>-&gt;send({
+        host    =&gt; Net::Domain::hostfqdn() || <span style="color: #61CE3C;">'api'</span>,
+        service =&gt; <span style="color: #61CE3C;">'partition_reduction'</span>,
+        state   =&gt; <span style="color: #61CE3C;">'active'</span>,
+        metric  =&gt; 1,
+        time    =&gt; time() - 10, <span style="color: #8B8989; font-style: italic;"># defaults to time()</span>
+        description =&gt; <span style="color: #61CE3C;">'1 api server actively reporting data from application.'</span>,
+    });
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">res</span> = $<span style="color: #D8FA3C;">r</span>-&gt;query(<span style="color: #61CE3C;">'true'</span>);     <span style="color: #8B8989; font-style: italic;"># Get all the states from the server</span>
+    $<span style="color: #D8FA3C;">res</span> = $<span style="color: #D8FA3C;">r</span>-&gt;query(<span style="color: #61CE3C;">'state = "active"'</span>);
+}
+
+$<span style="color: #D8FA3C;">SIG</span>{<span style="color: #61CE3C;">'INT'</span>}  = \&amp;<span style="color: #ff1493;">activate_monitor_signal</span>;
+$<span style="color: #D8FA3C;">SIG</span>{<span style="color: #61CE3C;">'QUIT'</span>} = \&amp;<span style="color: #ff1493;">handler</span>;
+    <span style="color: #8B8989; font-style: italic;"># host and port are optional</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline34" class="outline-2">
+<h2 id="orgheadline34"><span class="section-number-2">9</span> Environment Variables</h2>
+<div class="outline-text-2" id="text-9">
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #FF6400;">export</span> <span style="color: #D8FA3C;">partition_combiner_auth_url</span>=<span style="color: #61CE3C;">'https://interview-api.shiftboard.com/auth'</span>;
+<span style="color: #FF6400;">export</span> <span style="color: #D8FA3C;">partition_combiner_register_url</span>=<span style="color: #61CE3C;">'https://interview-api.shiftboard.com/register'</span>;
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo apt-get install libmojolicious-perl  libdigest-sha-perl liblist-moreutils-perl libtry-tiny-perl
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock18"><span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">strict</span>;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">warnings</span>;
+
+<span style="color: #FBDE2D; font-weight: bold;">package</span> <span style="color: #ff1493;">Audition</span>::WebService;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Digest</span>::SHA qw<span style="color: #61CE3C;">(sha1)</span>;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">List</span>::MoreUtils qw<span style="color: #61CE3C;">(zip)</span>;
+<span style="color: #8B8989; font-style: italic;">#</span><span style="color: #8B8989; font-style: italic;">use Mojolicious::Lite;</span>
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Mojo</span>::Base <span style="color: #61CE3C;">"Mojolicious"</span>;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Mojo</span>::URL;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Mojo</span>::Util qw<span style="color: #61CE3C;">(secure_compare)</span>;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Riemann</span>::Client;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">sigtrap</span> qw<span style="color: #61CE3C;">/handler signal_handler normal-signals/</span>;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline35" class="outline-2">
+<h2 id="orgheadline35"><span class="section-number-2">10</span> Test Suite</h2>
+<div class="outline-text-2" id="text-10">
+<div class="org-src-container">
+
+<pre class="src src-perl" id="orgsrcblock19"><span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Audition</span>::WebService;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Digest</span>::SHA  qw<span style="color: #61CE3C;">(sha1)</span>;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Mojo</span>::JSON qw<span style="color: #61CE3C;">(decode_json encode_json)</span>;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Test</span>::Mojo;
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Test</span>::MockModule
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">Test</span>::More;
+
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">FindBin</span>;
+<span style="color: #8B8989; font-style: italic;">#</span><span style="color: #8B8989; font-style: italic;">require "$FindBin::Bin/../lib";</span>
+<span style="color: #FBDE2D; font-weight: bold;">use</span> <span style="color: #4c83ff;">lib</span> <span style="color: #61CE3C;">"/home/mburns/projects/bb/shiftboard/Audition-WebService/lib"</span>;
+
+<span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">desired_together</span> = <span style="color: #61CE3C;">"split me"</span>;
+<span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">desired_apart</span> = {<span style="color: #61CE3C;">'even'</span>=&gt;[<span style="color: #61CE3C;">'p'</span>, <span style="color: #61CE3C;">'i'</span>, <span style="color: #61CE3C;">' '</span>, <span style="color: #61CE3C;">'e'</span>], <span style="color: #61CE3C;">'odd'</span>  =&gt; [<span style="color: #61CE3C;">'s'</span>, <span style="color: #61CE3C;">'l'</span>, <span style="color: #61CE3C;">'t'</span>, <span style="color: #61CE3C;">'m'</span>]};
+<span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">apart_got</span> = apart($<span style="color: #D8FA3C;">desired_together</span>);
+<span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">got_together</span> = together($<span style="color: #D8FA3C;">test_output</span>-&gt;{<span style="color: #61CE3C;">'odd'</span>}, $<span style="color: #D8FA3C;">test_output</span>-&gt;{<span style="color: #61CE3C;">'even'</span>});
+is($<span style="color: #D8FA3C;">got_together</span>, $<span style="color: #D8FA3C;">desired_together</span>, <span style="color: #61CE3C;">'Odd and even combined into a single numberical sequence'</span>);
+is($<span style="color: #D8FA3C;">apart_got</span>, $<span style="color: #D8FA3C;">desired_apart</span>, <span style="color: #61CE3C;">'Numbers split into two sequence based on being odd or even'</span>);
+
+<span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">t</span> = Test::Mojo-&gt;new;
+
+subtest <span style="color: #61CE3C;">'testing registered authentication'</span> =&gt; <span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+    plan tests =&gt; 2;
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">module</span> = Test::MockModule-&gt;new(<span style="color: #61CE3C;">'Audition::WebService'</span>);
+    $<span style="color: #D8FA3C;">module</span>-&gt;mock(<span style="color: #61CE3C;">'apart'</span>, <span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">desired_apart</span> });
+    $<span style="color: #D8FA3C;">module</span>-&gt;mock(<span style="color: #61CE3C;">'together'</span>, <span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #FBDE2D; font-weight: bold;">return</span> $<span style="color: #D8FA3C;">desired_together</span> });
+    Module::Name::subroutine(@<span style="color: #D8FA3C;">args</span>);
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/split'</span>);
+    $<span style="color: #D8FA3C;">url</span>-&gt;query({signature =&gt; $<span style="color: #D8FA3C;">good_signature</span>});
+    $<span style="color: #D8FA3C;">t</span>-&gt;post_ok($<span style="color: #D8FA3C;">url</span>=&gt;json=&gt;$<span style="color: #D8FA3C;">test_data</span>)-&gt;status_is(200);
+    $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/join'</span>);
+    $<span style="color: #D8FA3C;">t</span>-&gt;post_ok($<span style="color: #D8FA3C;">url</span>=&gt;json=&gt;$<span style="color: #D8FA3C;">test_data</span>)-&gt;status_is(200);
+    $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/lastResult'</span>);
+    $<span style="color: #D8FA3C;">t</span>-&gt;post_ok($<span style="color: #D8FA3C;">url</span>=&gt;json=&gt;$<span style="color: #D8FA3C;">test_data</span>)-&gt;status_is(200);
+};
+
+subtest <span style="color: #61CE3C;">'testing api app biz domain functionality'</span> =&gt; <span style="color: #FBDE2D; font-weight: bold;">sub</span> {
+    plan tests =&gt; 2;
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">module</span> = Test::MockModule-&gt;new(<span style="color: #61CE3C;">'Audition::WebService'</span>);
+        $<span style="color: #D8FA3C;">module</span>-&gt;mock(<span style="color: #61CE3C;">'check_credentials'</span>, <span style="color: #FBDE2D; font-weight: bold;">sub</span> { <span style="color: #FBDE2D; font-weight: bold;">return</span> 1 });
+    Module::Name::subroutine(@<span style="color: #D8FA3C;">args</span>);
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">test_data</span> = {<span style="color: #61CE3C;">'string'</span>=&gt;$<span style="color: #D8FA3C;">desired_together</span>};
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">good_signature</span> = sha1($<span style="color: #D8FA3C;">desired_together</span>);
+    <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/split'</span>);
+    $<span style="color: #D8FA3C;">url</span>-&gt;query({signature =&gt; $<span style="color: #D8FA3C;">good_signature</span>});
+        $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/join'</span>);
+        $<span style="color: #D8FA3C;">t</span>-&gt;post_ok($<span style="color: #D8FA3C;">url</span>=&gt;json=&gt;$<span style="color: #D8FA3C;">test_data</span>)-&gt;status_is(200);
+        <span style="color: #D8FA3C; font-weight: bold;">my</span> $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/split'</span>);
+        $<span style="color: #D8FA3C;">url</span>-&gt;query({signature =&gt; $<span style="color: #D8FA3C;">good_signature</span>});
+        $<span style="color: #D8FA3C;">t</span>-&gt;post_ok($<span style="color: #D8FA3C;">url</span>=&gt;json=&gt;$<span style="color: #D8FA3C;">test_data</span>)-&gt;status_is(200);
+        $<span style="color: #D8FA3C;">url</span> = $<span style="color: #D8FA3C;">t</span>-&gt;ua-&gt;server-&gt;url-&gt;userinfo(<span style="color: #61CE3C;">'TBD:TBD'</span>)-&gt;path(<span style="color: #61CE3C;">'/lastResult'</span>);
+        $<span style="color: #D8FA3C;">t</span>-&gt;post_ok($<span style="color: #D8FA3C;">url</span>=&gt;json=&gt;$<span style="color: #D8FA3C;">test_data</span>)-&gt;status_is(200);
+};
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline36" class="outline-2">
+<h2 id="orgheadline36"><span class="section-number-2">11</span> Build</h2>
+<div class="outline-text-2" id="text-11">
+<div class="org-src-container">
+
+<pre class="src src-sh">prove -v
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline42" class="outline-2">
+<h2 id="orgheadline42"><span class="section-number-2">12</span> Provision</h2>
+<div class="outline-text-2" id="text-12">
+</div><div id="outline-container-orgheadline37" class="outline-3">
+<h3 id="orgheadline37"><span class="section-number-3">12.1</span> <span class="todo TODO">TODO</span> Appliance (App + Packer Image)</h3>
+</div>
+<div id="outline-container-orgheadline38" class="outline-3">
+<h3 id="orgheadline38"><span class="section-number-3">12.2</span> <span class="todo TODO">TODO</span> Docker Image</h3>
+</div>
+<div id="outline-container-orgheadline39" class="outline-3">
+<h3 id="orgheadline39"><span class="section-number-3">12.3</span> <span class="todo TODO">TODO</span> Platform Runtime Orchestration</h3>
+</div>
+<div id="outline-container-orgheadline40" class="outline-3">
+<h3 id="orgheadline40"><span class="section-number-3">12.4</span> <span class="todo TODO">TODO</span> SSL</h3>
+</div>
+<div id="outline-container-orgheadline41" class="outline-3">
+<h3 id="orgheadline41"><span class="section-number-3">12.5</span> <span class="todo TODO">TODO</span> Reverse Proxy</h3>
+</div>
+</div>
+<div id="outline-container-orgheadline44" class="outline-2">
+<h2 id="orgheadline44"><span class="section-number-2">13</span> Release</h2>
+<div class="outline-text-2" id="text-13">
+</div><div id="outline-container-orgheadline43" class="outline-3">
+<h3 id="orgheadline43"><span class="section-number-3">13.1</span> Push</h3>
+<div class="outline-text-3" id="text-13-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">git push origin release-next
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">git push origin release-next
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline53" class="outline-2">
+<h2 id="orgheadline53"><span class="section-number-2">14</span> Deployment</h2>
+<div class="outline-text-2" id="text-14">
+</div><div id="outline-container-orgheadline52" class="outline-3">
+<h3 id="orgheadline52"><span class="section-number-3">14.1</span> <span class="todo TODO">TODO</span> Package</h3>
+<div class="outline-text-3" id="text-14-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">dpkg partition_combiner
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline45" class="outline-4">
+<h4 id="orgheadline45"><span class="section-number-4">14.1.1</span> logging/rotation</h4>
+</div>
+<div id="outline-container-orgheadline46" class="outline-4">
+<h4 id="orgheadline46"><span class="section-number-4">14.1.2</span> pid</h4>
+</div>
+<div id="outline-container-orgheadline47" class="outline-4">
+<h4 id="orgheadline47"><span class="section-number-4">14.1.3</span> system user</h4>
+</div>
+<div id="outline-container-orgheadline48" class="outline-4">
+<h4 id="orgheadline48"><span class="section-number-4">14.1.4</span> group</h4>
+</div>
+<div id="outline-container-orgheadline49" class="outline-4">
+<h4 id="orgheadline49"><span class="section-number-4">14.1.5</span> var/data</h4>
+</div>
+<div id="outline-container-orgheadline50" class="outline-4">
+<h4 id="orgheadline50"><span class="section-number-4">14.1.6</span> auditing</h4>
+</div>
+<div id="outline-container-orgheadline51" class="outline-4">
+<h4 id="orgheadline51"><span class="section-number-4">14.1.7</span> software defined storage</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline58" class="outline-2">
+<h2 id="orgheadline58"><span class="section-number-2">15</span> Continuous Delivery /Continuous Integration</h2>
+<div class="outline-text-2" id="text-15">
+</div><div id="outline-container-orgheadline54" class="outline-3">
+<h3 id="orgheadline54"><span class="section-number-3">15.1</span> built-in api devops endpoint</h3>
+<div class="outline-text-3" id="text-15-1">
+<p>
+Target for github app repo release hook trigger post. Existing running version of the application
+sets up and restarts public facing webserver proxying with updated symbolic links for
+the site-availabe and sites-enabled point to the next blue green service pair in the the versioned
+deployment release chain.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline55" class="outline-3">
+<h3 id="orgheadline55"><span class="section-number-3">15.2</span> sites-available</h3>
+</div>
+<div id="outline-container-orgheadline56" class="outline-3">
+<h3 id="orgheadline56"><span class="section-number-3">15.3</span> sites-enabled</h3>
+</div>
+<div id="outline-container-orgheadline57" class="outline-3">
+<h3 id="orgheadline57"><span class="section-number-3">15.4</span> restart</h3>
+</div>
+</div>
+<div id="outline-container-orgheadline60" class="outline-2">
+<h2 id="orgheadline60"><span class="section-number-2">16</span> Appendix A:   DevOps Document Overview</h2>
+<div class="outline-text-2" id="text-16">
+<p>
+Relax, use what you already have - powerful devops tools/practice to automatically maintain and update
+your system are just familiar linux stuff and things and a couple simple ideas.
+</p>
+
+<p>
+Use the existing tools and practices already in place by major distros to manage application software so
+it blends into the ecosystem and plays by the distributions guidelines.  Translation put your software into
+correctly formated packages in this debian.  Work on projects like any other open source github project fork.
+The thinkng is: make it easy to work on the software and get it running - coupling that with make updating or rollingback easy
+while enabling fast recall to the how and why this things.
+</p>
+
+<p>
+Harvest low hanging fruit that yeilds nice to have features while in development
+</p>
+<ul class="org-ul">
+<li>forensic system analysis via instant replay using atop archive fils + auditd + log files + application virtualized containerization</li>
+<li>providing a swagger api that allows dev ops tasks to be easily scripted via your favorite language as a client
+creates a feedback path which makes what you can do directly from the devops docs directly or run as a script by
+running emacs as a dynamic language from called from a shell script.  This active documentation is a playbook - an automated one.</li>
+<li>Use a push system based on ssh and public/private key access.</li>
+</ul>
+</div>
+
+<div id="outline-container-orgheadline59" class="outline-3">
+<h3 id="orgheadline59"><span class="section-number-3">16.1</span> Features</h3>
+<div class="outline-text-3" id="text-16-1">
+<ul class="org-ul">
+<li>Publishes code into source files</li>
+<li>Releases the code into the upstream code repository</li>
+<li>Deploys the code onto the desired runtime platorm (dev, qa, stg, prd)</li>
+<li>Provisions the runtime infrastruce and like artifacts the application is dependent</li>
+<li>Capture the functional requirements in automate testable form</li>
+<li>Understand engineering decisions behind the implementation, design, methodology testing</li>
+<li>Define the way features are deployed into new versions of this WebService</li>
+<li>Run tests</li>
+<li>Provides application documentation</li>
+<li>Provide development history</li>
+<li>Provides a reduamentry cli interface to devops/maintence tasks</li>
+<li>Sets up and runs system from src control repo (github)</li>
+<li>Provide easy way to refer and collaborate among developers</li>
+<li>Continous Delivery with rollback</li>
+<li>Worksheet to aid in project management aspects of software development</li>
+<li>Bridge that first draft proof of concept devops task into part of the crm/orchestration process</li>
+<li>Allows the stitching together of many pre-existing tools</li>
+<li>Incorporate others work via pull requests in a timely fashion</li>
+<li>Define Idioms</li>
+<li>Capture domain specific paculiarities</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline61" class="outline-2">
+<h2 id="orgheadline61"><span class="section-number-2">17</span> Appendex B: System 3rd Party Dependencies/Requirements</h2>
+<div class="outline-text-2" id="text-17">
+<ul class="org-ul">
+<li>Local: Running in the context of a ordinary linux system account</li>
+<li>A single VPC, with the usual 3 security group setup - internal, web, and bastion.</li>
+<li><a href="https://www.terraform.io/">Terraform</a> and for provisioning infrastructure.</li>
+<li><a href="https://www.packer.io/">Packer</a> to build a single general-purpose base AMI.</li>
+<li>API web application</li>
+<li>Common library components</li>
+<li>Github hooks to deploy</li>
+<li>Riemann monitoring integration.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">&lt;2018-05-01 Tue&gt;</span></span></p>
+<p class="author">Author: Matthew Burns</p>
+<p class="date">Created: 2018-05-02 Wed 12:55</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
