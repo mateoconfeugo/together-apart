@@ -38,33 +38,36 @@ sub check_credentials {
                 : return 0;
 }
 
+sub check_signature {
+    my ($signature, $string) = @_;
+    $signature && $string && ($signature eq sha1($string))
+        ? return 1
+        : return 1;
+}
+
 under(sub {my $c = shift; # Basic Authentication for each request
            $c->render(json=>{message=>"Invalid"}, status=>401)
                unless check_credentials $c
       });
 
 group {
-    get '/lastResponse'=>sub {
-        my $c = shift;
-        my $last = $c->session->{'returned_last'};
-        return $c->render(json=>{message=>$last}, status=>200);
-    };
     under sub { # Valid API Requirement Assertions
         my $c = shift;
         my $signature = $c->param('signature') || undef;
         my $string =  $c->req->json->{string} || undef;
-
-        return $c->render(json=>{message=>"Checksum failure"}, status=>403)
-            unless $signature && $string && ($signature eq sha1($string));
+        $c = $c->cookie('together_apart'=>'last', {path=>'/'});
         return $c->render(json=>{message=>"Parameter required)"}, status=>422)
             unless $string;
+        return $c->render(json=>{message=>"Checksum failure"}, status=>403)
+            unless check_signature($signature, $string);
+
     };
     post '/split'=>sub {
         my $c  = shift;
         my $split = apart($c->req->json->{string}) || undef;
         return $c->render(json=>{message=>"Parameter Invalid"}, status=>422)
             unless $split;
-        $c->session('returned_last'=>$split);
+        $c->session->{'returned_last'} = $split;
         return $c->render(json=>{message=>$split}, status=>200);
     };
     post '/join'=>sub {
@@ -74,11 +77,21 @@ group {
         return $c->render(json=>{message=>"Parameter required"}, status=>422)
             unless $odd && $even;
         my $joined = together($odd, $even);
-        $c->session('returned_last'=>$joined);
+        $c->session->{'returned_last'}=$joined;
         return $c->render(json=>{message=>$joined}, status=>200);
     };
 };
 
+get '/lastResponse'=>sub {
+    my $c = shift;
+    my $last = $c->session->{'returned_last'};
+    return $c->render(json=>{message=>$last}, status=>200);
+};
+
+
+
+sub run {
+    app->secrets(['DeletedCodeIsDebuggedCode']);
     app->log->info("starting");
     app->start;
 }

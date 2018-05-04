@@ -341,8 +341,19 @@ git push origin release-next
 * Deployment
 **  Package
 #+BEGIN_SRC sh
-dpkg together-apart
+dpkg together-apart \
+--pre-invoke test-features-absent \
+--post-invoke test-features-present \
+--status-fd ./current-status \
+--build ../dist/
 #+END_SRC
+#+BEGIN_SRC sh
+dpkg together-apart --pre-invoke test-features-absent --post-invoke test-features-present --status-fd ./current-status --build ../dist/
+#+END_SRC
+
+#+RESULTS:
+
+
 ** logging/rotation
 ** system user
 ** groups
