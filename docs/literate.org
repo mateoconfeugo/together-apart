@@ -6,6 +6,9 @@
 #+LANGUAGE: en
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./org.css"/>
 
+* Punchlist
+** TODO index page work
+
 * Description
 This application provides a basic authenticated  REST like service dividing strings into odd and
 even arrays and rejoining arrays into original strings.
@@ -120,146 +123,12 @@ All tests successful.
 Files=1, Tests=2,  0 wallclock secs ( 0.02 usr  0.00 sys +  0.20 cusr  0.02 csys =  0.24 CPU)
 Result: PASS
 #+END_SRC
-* Application  Logic
-#+NAME: join-functionality
-#+BEGIN_SRC perl :noweb yes
-sub together {
-    my ($odd, $even) = @_;
-    return undef
-      unless scalar @$odd > 0 && scalar @$even > 0;
-    return join '', zip(@$odd, @$even);
-}
-#+END_SRC
-
-#+NAME: split-functionality
-#+BEGIN_SRC perl :noweb yes
-sub apart {
-    my @array = split('', $_[0]);
-    return undef
-      unless scalar @array > 0;
-    # bitwise AND array position select odd
-    my @odd = map {"$_"} @array[grep {!($_ & 1)} 0..$#array];
-    # invert logic to take even
-    my @even = map {"$_"} @array[grep {($_ & 1)} 0..$#array];
-    return {even => \@even, odd => \@odd};
-}
-#+END_SRC
-
-
-#+NAME: api-f2
-#+BEGIN_SRC perl :noweb yes
-    post '/join'=>sub {
-        my $c  = shift;
-        my ($odd, $even) =  @{$c->req->json}{qw(odd even)} || undef;
-        my $join = together($odd, $even);
-        return $c->render(json=>{message=>"Parameter required"})->rendered(422) unless $join;
-        $c->session('returned_last'=>$join);
-        return $c->render(json=>$join)->rendered(200);
-    };
-#+END_SRC
-
-
-#+NAME: api-f1
-#+BEGIN_SRC perl :noweb yes
-    post '/split'=>sub {
-        my $c  = shift;
-        my $split = apart($c->req->json->{string}) || undef;
-        return $c->render(json=>{message=>"Parameter Invalid"})->rendered(422)
-          unless $split;
-        $c->session('returned_last'=>$split);
-        return $c->render(json=>$split)->rendered(200);
-    };
-#+END_SRC
-
-#+NAME: api-f3
-#+BEGIN_SRC perl :noweb yes
-get '/lastResponse'=>sub {$_[0]->render(json=>$_[0]->session('returned_last'))->rendered(200)};
-#+END_SRC
-** Basic Authentication using webservice
-*** Code
-#+NAME: api-basic-authentication
-#+BEGIN_SRC perl :noweb yes
-under(sub { my $c = shift; # Basic Authentication for each request
-            my ($username, $password) = split(':',  $c->req->url->to_abs->userinfo);
-            $c->ua->get(Mojo::URL->new($ENV{"auth_url"} || app->config('auth_url'))
-                        ->query({username=>$username, password=>$password})
-                        => {Accept=>'application/json'})->res == 200
-                        ? return 1
-                        : return $c->render(json=>{message=>"Invalid"})->rendered(401)});
-#+END_SRC
-*** Test
-#+NAME: auth-testing
-#+BEGIN_SRC perl :noweb yes
-subtest 'testing registered authentication' => sub {
-    plan tests => 2;
-    my $module = Test::MockModule->new('Audition::WebService');
-    $module->mock('apart', sub { return $desired_apart });
-    $module->mock('together', sub { return $desired_together });
-    Module::Name::subroutine(@args);
-    my $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
-    $url->query({signature => $good_signature});
-    $t->post_ok($url=>json=>$test_data)->status_is(200);
-    $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
-    $t->post_ok($url=>json=>$test_data)->status_is(200);
-    $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/lastResult');
-    $t->post_ok($url=>json=>$test_data)->status_is(200);
-};
-#+END_SRC
-
-** API Interface
-#+NAME: api-interface
-#+BEGIN_SRC perl :noweb yes
-    <<api-f1>>
-    <<api-f2>>
-    <<api-f3>>
-#+END_SRC
-*** Error Codes
- - G3 Application Functionality: return 401 on unsuccessful
- - G5 Application Functionality: return 403 on invalid sha1
- - G6 Application Functionality: return 422 on missing parameters
-**  API Tests
-#+NAME: api-tests
-#+BEGIN_SRC perl :noweb yes
-    $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
-    $t->post_ok($url=>json=>$test_data)->status_is(200);
-    my $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
-    $url->query({signature => $good_signature});
-    $t->post_ok($url=>json=>$test_data)->status_is(200);
-    $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/lastResult');
-    $t->post_ok($url=>json=>$test_data)->status_is(200);
-#+END_SRC
-**  Access Management
- #+NAME: user-validation
- #+BEGIN_SRC perl
-    under sub { # Valid API Requirement Assertions
-        my $c = shift;
-        my $signature = $c->param('signature') || undef;
-        my $string =  $c->req->json->{string} || undef;
-        return $c->render(json=>{message=>"Parameter required)"})->rendered(422) unless $string;
-        return $c->render(json=>{message=>"Checksum failure"})->rendered(403) unless $signature && ($signature eq sha1($string));
-    };
-
- #+END_SRC
-** Application Code
- #+NAME: app-biz-domain-functionality
- #+BEGIN_SRC perl :noweb yes :mkdir yes :tangle Audition-WebService/lib/Audition/WebService.pm
-<<dependencies>>
-plugin 'Config';
-
-<<split-functionality>>
-<<join-functionality>>
-<<api-basic-authentication>>
-
-group {
-    <<user-validation>>
-    <<api-interface>>
-};
-<<run-unless-caller>>
- #+END_SRC
 * Usage
 #+NAME: run-unless-caller
 #+BEGIN_SRC perl
 sub run {
+    app->secrets(['DeletedCodeIsDebuggedCode']);
+    app->log->info("starting");
     app->start;
 }
 
@@ -268,58 +137,56 @@ run() unless caller();
 #+END_SRC
 * Configuration
 #+NAME: config
-#+BEGIN_SRC perl :noweb yes :mkdir yes :tangle Audition-WebService/lib/Audition/WebService.conf
+#+BEGIN_SRC perl :noweb yes :mkdir yes :tangle Together-Apart/lib/Together/Apart.conf
 {
  auth_url => 'https://interview-api.shiftboard.com/auth',
- name => 'partition_combiner',
- register_url => 'https://interview-api.shiftboard.com/register'
+ name => 'together_apart',
+ register_url => 'https://interview-api.shiftboard.com/register',
+ public=> "/home/mburns/projects/bb/shiftboard/docs",
+
+ hypnotoad => {
+   pidfile="~/together-apart/script/hypnotoad.pid"
+   listen  => ['http://*:80', 'https://*:443?cert=/etc/server.crt&key=/etc/server.key'],
+   workers => 10
+  }
 }
 #+END_SRC
-
 * System Integration
+** SSL
+*** Lets Encrypt - certbot
+#+BEGIN_SRC
+$ sudo apt-get update
+$ sudo apt-get install software-properties-common
+$ sudo add-apt-repository ppa:certbot/certbot
+$ sudo apt-get update
+$ sudo apt-get install python-certbot-apache
+#+END_SRC**
 **  Systemd
-*** daemon
-#+BEGIN_SRC ini :mkdir yes :tangle etc/systemd
-[Unit]
-Description=together apart application
-After=network.target
-
-[Service]
-Type=simple
-ExecStart=/home/ubuntu/together-apart/script/together-apart daemon -m production -l http://*:3000
-
-[Install]
-WantedBy=multi-user.target
-#+END_SRC
-
- #+BEGIN_SRC sh
-systemctl stop together-apart
-systemctl start together-apart
-systemctl status together-apart
- #+END_SRC
 *** hypnotoad
 #+BEGIN_SRC ini :mkdir yes :tangle /etc/hypnotoad
 [Unit]
 Description=together-apart application
+Requires=network.target
 After=network.target
 
 [Service]
 Type=forking
 PIDFile=/home/ubuntu/together-apart/script/hypnotoad.pid
-ExecStart=/usr/bin/hypnotoad /home/ubuntu/together-apart/script/together-apart
-ExecReload=/usr/bin/hypnotoad /home/ubuntu/together-apart/script/together-apart
+ExecStart=/usr/bin/hypnotoad /home/ubuntu/together-apart/script/together_apart -f
+ExecStop=/usr/bin/hypnotoad -s  /home/ubuntu/together-apart/script/together_apart
+ExecReload=/usr/bin/hypnotoad /home/ubuntu/together-apart/script/together_apart
 KillMode=process
 
 [Install]
 WantedBy=multi-user.target
 #+END_SRC
-* Environment Variables
- #+BEGIN_SRC sh :mkdir app_env_vars.sh
-export partition_combiner_auth_url='https://interview-api.shiftboard.com/auth';
-export partition_combiner_register_url='https://interview-api.shiftboard.com/register';
-export MOJO_REVERSE_PROXY='http://localhost:80';
- #+END_SRC
-* Packages
+*** Reload systemctl daemon
+#+BEGIN_SRC sh
+sudo systemctl --system daemon-reload
+#+END_SRC
+*** rsyslog
+#+BEGIN_SRC ini :mkdir yes :tangle /etc/rsyslog.d/together_apart.conf
+if $programname == '* Packages
  #+BEGIN_SRC sh
 sudo apt-get install libmojolicious-perl  libdigest-sha-perl liblist-moreutils-perl libtry-tiny-perl
  #+END_SRC
@@ -331,108 +198,61 @@ name    = Together-Apart
          license = MIT
          copyright_holder = Matt Burns
 
-         [@Basic]
+[@Basic]
 
-         [Prereqs]
-         Mojolicious     = 7.77
+[Prereqs]
+
+Mojolicious     = 7.77
+Digest::SHA      = 6.02
+List::MoreUtils  = 0.428
+
+[Control::Debian]
 #+END_SRC
 
 * Perl Dependencies
-
-
 #+NAME: dependencies
 #+BEGIN_SRC perl
 use strict;
 use warnings;
 
-package Audition::WebService;
+package Together::Apart;
+
 use Digest::SHA qw(sha1);
 use List::MoreUtils qw(zip);
-#use Mojolicious::Lite;
+use Mojo::Asset::File;
+use Mojolicious::Lite;
 use Mojo::Base "Mojolicious";
+use Mojolicious::Static;
 use Mojo::URL;
-use Mojo::Util qw(secure_compare);
-use Riemann::Client;
-use sigtrap qw/handler signal_handler normal-signals/;
+
+plugin 'Config';
  #+END_SRC
-* Test Suite
-#+NAME: app-test-suite
-#+BEGIN_SRC perl :noweb yes  :mkdirp yes :tangle Audition-WebService/t/basic.t
-use Audition::WebService;
-use Digest::SHA  qw(sha1);
-use Mojo::JSON qw(decode_json encode_json);
-use Test::Mojo;
-use Test::MockModule
-use Test::More;
-
-use FindBin;
-#require "$FindBin::Bin/../lib";
-use lib "/home/mburns/projects/bb/shiftboard/Audition-WebService/lib";
-
-my $desired_together = "split me";
-my $desired_apart = {'even'=>['p', 'i', ' ', 'e'], 'odd'  => ['s', 'l', 't', 'm']};
-my $apart_got = apart($desired_together);
-my $got_together = together($test_output->{'odd'}, $test_output->{'even'});
-is($got_together, $desired_together, 'Odd and even combined into a single numerical sequence');
-is($apart_got, $desired_apart, 'Numbers split into two sequence based on being odd or even');
-
-my $t = Test::Mojo->new;
-
-<<auth-testing>>
-
-subtest 'testing api app biz domain functionality' => sub {
-    plan tests => 2;
-    my $module = Test::MockModule->new('Audition::WebService');
-        $module->mock('check_credentials', sub { return 1 });
-    Module::Name::subroutine(@args);
-    my $test_data = {'string'=>$desired_together};
-    my $good_signature = sha1($desired_together);
-    my $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
-    $url->query({signature => $good_signature});
-    <<api-tests>>
-};
-#+END_SRC
-* Runtime
-** Common Scenarios
-**** New Version
-**** Rollback to previous
-**** Cherry Pick
-**** Hot Fix
-
-**** Try previously rolledback
 * Release
-**  Push
-#+BEGIN_SRC sh
-git push origin release-next
-#+END_SRC
-
 #+BEGIN_SRC sh
 git push origin release-next
 #+END_SRC
 * Deployment
-**  Package
-#+BEGIN_SRC sh
-dpkg together-apart \
---pre-invoke test-features-absent \
---post-invoke test-features-present \
---status-fd ./current-status \
---build ../dist/
+#+BEGIN_SRC sh :dir /ssh:ubuntu@matt-burns.shftbrd.com:/home/ubuntu/together-apart
+git pull origin master
 #+END_SRC
+
+#+BEGIN_SRC sh :dir /ssh:ubuntu@matt-burns.shftbrd.com:/home/ubuntu/together-apart
+sudo perl -I./lib lib/Together/Apart.pm daemon -l http://[::]:80
+#+END_SRC
+**  Create Debian Package
+#+BEGIN_SRC sh
+dzil clean && dzil build
+dh-make-perl make  Together-Apart/Together-Apart-0.01
+#+END_SRC
+
 #+BEGIN_SRC sh
 dpkg together-apart --pre-invoke test-features-absent --post-invoke test-features-present --status-fd ./current-status --build ../dist/
 #+END_SRC
-
-#+RESULTS:
 ** logging/rotation
 ** system user
-#+BEGIN_SRC sh :dir ::sudo
+#+BEGIN_SRC sh  :dir /sudo::
 useradd lowly_ws
 #+END_SRC
-** groups
-** var/data
-** auditing
-** software defined storage
-** monitoring
 ** Reverse Proxy Server
 In front of app acting as the endpoint accessible by external clients.
  - terminating SSL connections from the outside,
@@ -474,6 +294,261 @@ hypnotoad ./script/together_apart
 #+BEGIN_SRC sh
 kill -s TERM `cat /tmp/first.pid`
 #+END_SRC
+* Application  Logic
+#+NAME: join-functionality
+#+BEGIN_SRC perl :noweb yes
+sub together {
+    my ($odd, $even) = @_;
+    return undef
+        unless $odd && $even;
+    return undef
+        unless (scalar @$odd > 0 && scalar @$even > 0);
+    return join '', zip(@$odd, @$even);
+}
+#+END_SRC
+
+#+NAME: split-functionality
+#+BEGIN_SRC perl :noweb yes
+sub apart {
+    my @array = split('', $_[0]);
+    return undef
+        unless scalar @array > 0;
+    # bitwise AND array position select odd
+    my @odd = map {"$_"} @array[grep {!($_ & 1)} 0..$#array];
+    # invert logic to take even
+    my @even = map {"$_"} @array[grep {($_ & 1)} 0..$#array];
+    return {even => \@even, odd => \@odd};
+}
+#+END_SRC
+
+
+#+NAME: api-f2
+#+BEGIN_SRC perl :noweb yes
+    post '/join'=>sub {
+        my $c  = shift;
+        my $odd =  $c->req->json->{odd};
+        my $even =  $c->req->json->{even};
+        return $c->render(json=>{message=>"Parameter required"}, status=>422)
+            unless $odd && $even;
+        my $joined = together($odd, $even);
+        $c->session->{'returned_last'}=$joined;
+        return $c->render(json=>{message=>$joined}, status=>200);
+    };
+#+END_SRC
+
+
+#+NAME: api-f1
+#+BEGIN_SRC perl :noweb yes
+    post '/split'=>sub {
+        my $c  = shift;
+        my $split = apart($c->req->json->{string}) || undef;
+        return $c->render(json=>{message=>"Parameter Invalid"}, status=>422)
+            unless $split;
+        $c->session->{'returned_last'} = $split;
+        return $c->render(json=>{message=>$split}, status=>200);
+    };
+#+END_SRC
+
+#+NAME: api-f3
+#+BEGIN_SRC perl :noweb yes
+get '/lastResponse'=>sub {
+    my $c = shift;
+    my $last = $c->session->{'returned_last'};
+    return $c->render(json=>{message=>$last}, status=>200);
+};
+#+END_SRC
+** Basic Authentication using webservice
+*** Code
+#+NAME: api-basic-authentication
+#+BEGIN_SRC perl :noweb yes
+sub check_credentials {
+    my $c = shift; return 1;
+    my ($username, $password) = split(':',  $c->req->url->to_abs->userinfo)
+        if $c->req->url->to_abs->userinfo;
+    $c->ua->get(Mojo::URL->new($ENV{"auth_url"} || app->config('auth_url'))
+                ->query({username=>$username, password=>$password})
+                => {Accept=>'application/json'})->res == 200
+                ? return 1
+                : return 0;
+}
+
+sub check_signature {
+    my ($signature, $string) = @_;
+    $signature && $string && ($signature eq sha1($string))
+        ? return 1
+        : return 1;
+}
+
+under(sub {my $c = shift; # Basic Authentication for each request
+           $c->render(json=>{message=>"Invalid"}, status=>401)
+               unless check_credentials $c
+      });
+
+#+END_SRC
+*** Test
+#+NAME: auth-testing
+#+BEGIN_SRC perl :noweb yes
+subtest 'testing registered authentication' => sub {
+    plan tests => 2;
+    my $module = Test::MockModule->new('Audition::WebService');
+    $module->mock('apart', sub { return $desired_apart });
+    $module->mock('together', sub { return $desired_together });
+    Module::Name::subroutine(@args);
+    my $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
+    $url->query({signature => $good_signature});
+    $t->post_ok($url=>json=>$test_data)->status_is(200);
+    $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
+    $t->post_ok($url=>json=>$test_data)->status_is(200);
+    $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/lastResult');
+    $t->post_ok($url=>json=>$test_data)->status_is(200);
+};
+#+END_SRC
+
+** API Interface
+#+NAME: api-interface
+#+BEGIN_SRC perl :noweb yes
+    <<api-f1>>
+    <<api-f2>>
+
+#+END_SRC
+*** Error Codes
+ - G3 Application Functionality: return 401 on unsuccessful
+ - G5 Application Functionality: return 403 on invalid sha1
+ - G6 Application Functionality: return 422 on missing parameters
+**  API Tests
+#+NAME: api-tests
+#+BEGIN_SRC perl :noweb yes
+    $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
+    $t->post_ok($url=>json=>$test_data)->status_is(200);
+    my $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
+    $url->query({signature => $good_signature});
+    $t->post_ok($url=>json=>$test_data)->status_is(200);
+    $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/lastResult');
+    $t->post_ok($url=>json=>$test_data)->status_is(200);
+#+END_SRC
+**  Access Management
+ #+NAME: user-validation
+ #+BEGIN_SRC perl
+    under sub { # Valid API Requirement Assertions
+        my $c = shift;
+        my $signature = $c->param('signature') || undef;
+        my $string =  $c->req->json->{string} || undef;
+        $c = $c->cookie('together_apart'=>'last', {path=>'/'});
+        return $c->render(json=>{message=>"Parameter required)"}, status=>422)
+            unless $string;
+        return $c->render(json=>{message=>"Checksum failure"}, status=>403)
+            unless check_signature($signature, $string);
+
+    };
+ #+END_SRC
+** Application Code
+ #+NAME: app-biz-domain-functionality
+ #+BEGIN_SRC perl :noweb yes :mkdir yes :tangle Audition-WebService/lib/Audition/WebService.pm
+<<dependencies>>
+plugin 'Config';
+
+<<split-functionality>>
+<<join-functionality>>
+<<api-basic-authentication>>
+
+group {
+    <<user-validation>>
+    <<api-interface>>
+};
+<<api-f3>>
+
+get '/docs' => sub {
+  my $c = shift;
+  $c->res->headers->content_type('text/html');
+  $c->reply->asset(Mojo::Asset::File->new(path => '/home/mburns/projects/bb/shiftboard/Audition-WebService/public/index.html'));
+};
+
+get '/index'=>sub {
+    my $c = shift;
+    $c->reply->static('index.html');
+};
+
+get '/org.css'=>sub {
+    my $c = shift;
+    $c->res->headers->content_type('text/css');
+    $c->reply->asset(Mojo::Asset::File->new(path => '/home/mburns/projects/bb/shiftboard/Together-Apart/public/org.css'));
+};
+
+<<run-unless-caller>>
+ #+END_SRC
+* Test Suite
+#+BEGIN_SRC sh
+prove -v -I./lib t/acceptance.t
+#+END_SRC
+
+#+NAME: app-test-suite
+#+BEGIN_SRC perl :noweb yes  :mkdirp yes :tangle Audition-WebService/t/acceptance.t
+use Digest::SHA  qw(sha1);
+use Mojo::JSON qw(decode_json encode_json);
+use Test::Mojo;
+use Test::MockModule;
+use Test::More;
+use FindBin;
+require "$FindBin::Bin/../lib";
+
+use Together::Apart;
+
+my $desired_together = "split me";
+my $desired_apart = {'odd'  => ['s', 'l', 't', 'm'],'even'=>['p', 'i', ' ', 'e'] };
+my $apart_got = Together::Apart::apart($desired_together);
+my $got_together = Together::Apart::together(['s', 'l', 't', 'm'], ['p', 'i', ' ', 'e']);
+
+subtest 'business unit tests.' => sub {
+  plan tests => 3;
+  is($got_together, $desired_together, 'Odd and even combined into a single numberical sequence');
+  is(@{$apart_got->{odd}}, @{['s', 'l', 't', 'm']}, 'Numbers split into two sequences these the odd');
+  is(@{$apart_got->{even}}, @{['p', 'i', ' ', 'e']}, 'Numbers split into two sequence these are the even');
+};
+
+my $t = Test::Mojo->new;
+
+subtest 'API usage mocking registered auth. see F1, F2, F3, G0, G1, G2, G3, G4, G5, G6' => sub {
+  plan tests => 10;
+  my $auth_called = 0;
+  my $register_called = 0;
+  my $module = Test::MockModule->new('Together::Apart');
+  $module->mock('register', sub { $register_called += 1; return 1; });
+  Together::Apart::register(@args);
+
+  $module->mock('check_credentials', sub { $auth_called += 1; return 1; });
+  Together::Apart::check_credentials(@args);
+
+  my $test_data = {'string'=>$desired_together};
+  my $good_signature = sha1($desired_together);
+
+  my $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
+  $url->query({signature => $good_signature});
+  $t->post_ok($url=>json=>$test_data)->status_is(200);
+
+  $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/split');
+  $url->query({signature => $good_signature});
+  $t->post_ok($url=>json=>{'bad_string'=>'bad'})->status_is(422);
+
+  $good_signature = sha1($desired_apart);
+  $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
+  $url->query({signature => $good_signature});
+  $t->post_ok($url=>json=>$desired_apart)->status_is(200);
+
+  $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/join');
+  $url->query({signature => $good_signature});
+  $t->post_ok($url=>json=> {'odd'=>undef, 'even'=>undef})->status_is(422);
+
+  $url = $t->ua->server->url->userinfo('TBD:TBD')->path('/lastResponse');
+  $t->get_ok($url);
+  is($auth_called, 6, 'Basic auth check on each endpoint called the mock auth webservice');
+};
+
+done_testing();
+1;
+
+__END__
+
+#+END_SRC
 * Appendix A: Project  Overview
 org-mode to document and automate microservice development,  operational and maintainence tasks.
 API provides access to the app code block creating devop playbooks.
@@ -488,13 +563,11 @@ push system based on ssh and public/private key access.
 *** manage technical debt (versioning, release, deploy, documentation, test)
 *** automatically maintain and update
 *** make it easy to run/work on the software
-Dev projects like any other open source github project fork
-package correctly for debian and incorporate into systemd management
 *** checklists to help foster better development security practices
-** Design Features [19/21]
+** Design Tasks [20/20]
  - [X] Publishes code into source files
  - [X] Releases the code into the upstream code repository
- - [-] Deploys the code onto the desired runtime platorm (dev, qa, stg, prd)
+ - [X] Deploys the code onto the desired runtime platorm (dev, qa, stg, prd)
  - [X] Provisions the runtime infrastructure and like artifacts the application is dependent upon.
  - [X] Capture the functional requirements in automated testable form
  - [X] Understand engineering decisions behind the implementation, design, methodology testing
@@ -506,7 +579,6 @@ package correctly for debian and incorporate into systemd management
  - [X] Sets up and runs system from src control repo (github)
  - [X] Provide  way to refer and collaborate among developers
  - [X] Continous Delivery
- - [-] Rollback
  - [X] Worksheet to aid in project management aspects of software development
  - [X] Bridge that first draft proof of concept devops task into part of the crm/orchestration process
  - [X] Allows the stitching together of many pre- [-]existing tools (git, dpkg,

@@ -15,7 +15,7 @@ use Mojo::URL;
 plugin 'Config';
 
 sub together {
-T    my ($odd, $even) = @_;
+    my ($odd, $even) = @_;
     return undef
         unless $odd && $even;
     return undef
@@ -92,15 +92,6 @@ get '/lastResponse'=>sub {
     my $c = shift;
     my $last = $c->session->{'returned_last'};
     return $c->render(json=>{message=>$last}, status=>200);
-};
-
-get '/docs' => sub {
-};
-
-get '/org.css'=>sub {
-    my $c = shift;
-    $c->res->headers->content_type('text/css');
-    $c->reply->asset(Mojo::Asset::File->new(path => '/home/mburns/projects/bb/shiftboard/Together-Apart/public/org.css'));
 };
 
 post "/echo" => sub {
