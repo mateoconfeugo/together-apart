@@ -1,4 +1,4 @@
-#ABSTRACT:  Basic authenticated REST service dividing strings into odd and even arrays and rejoining arrays into original strings
+#ABSTRACT: split join api endpoints
 use strict;
 use warnings;
 
@@ -14,14 +14,6 @@ use Mojo::URL;
 
 plugin 'Config';
 
-sub together {
-    my ($odd, $even) = @_;
-    return undef
-        unless $odd && $even;
-    return undef
-        unless (scalar @$odd > 0 && scalar @$even > 0);
-    return join '', zip(@$odd, @$even);
-}
 sub apart {
     my @array = split('', $_[0]);
     return undef
@@ -32,9 +24,16 @@ sub apart {
     my @even = map {"$_"} @array[grep {($_ & 1)} 0..$#array];
     return {even => \@even, odd => \@odd};
 }
-
+sub together {
+    my ($odd, $even) = @_;
+    return undef
+        unless $odd && $even;
+    return undef
+        unless (scalar @$odd > 0 && scalar @$even > 0);
+    return join '', zip(@$odd, @$even);
+}
 sub check_credentials {
-    my $c = shift; return 1;
+    my $c = shift;
     my ($username, $password) = split(':',  $c->req->url->to_abs->userinfo)
         if $c->req->url->to_abs->userinfo;
     $c->ua->get(Mojo::URL->new($ENV{"auth_url"} || app->config('auth_url'))
@@ -48,7 +47,7 @@ sub check_signature {
     my ($signature, $string) = @_;
     $signature && $string && ($signature eq sha1($string))
         ? return 1
-        : return 1;
+        : return 0;
 }
 
 under(sub {my $c = shift; # Basic Authentication for each request
@@ -56,49 +55,56 @@ under(sub {my $c = shift; # Basic Authentication for each request
                unless check_credentials $c
       });
 
+
 group {
-    under sub { # Valid API Requirement Assertions
-        my $c = shift;
-        my $signature = $c->param('signature') || undef;
-        my $string =  $c->req->json->{string} || undef;
-        $c = $c->cookie('together_apart'=>'last', {path=>'/'});
-        return $c->render(json=>{message=>"Parameter required)"}, status=>422)
-            unless $string;
-        return $c->render(json=>{message=>"Checksum failure"}, status=>403)
-            unless check_signature($signature, $string);
-
-    };
-    post '/split'=>sub {
-        my $c  = shift;
-        my $split = apart($c->req->json->{string}) || undef;
-        return $c->render(json=>{message=>"Parameter Invalid"}, status=>422)
-            unless $split;
-        $c->session->{'returned_last'} = $split;
-        return $c->render(json=>{message=>$split}, status=>200);
-    };
-    post '/join'=>sub {
-        my $c  = shift;
-        my $odd =  $c->req->json->{odd};
-        my $even =  $c->req->json->{even};
-        return $c->render(json=>{message=>"Parameter required"}, status=>422)
-            unless $odd && $even;
-        my $joined = together($odd, $even);
-        $c->session->{'returned_last'}=$joined;
-        return $c->render(json=>{message=>$joined}, status=>200);
-    };
+        under sub { # Valid API Requirement Assertions
+            my $c = shift;
+            my $signature = $c->param('signature') || undef;
+            my $string =  $c->req->json->{string} || undef;
+            $c = $c->cookie('together_apart'=>'last', {path=>'/'});
+            return $c->render(json=>{message=>"Parameter required)"}, status=>422)
+                unless $string;
+            return $c->render(json=>{message=>"Checksum failure"}, status=>403)
+                unless check_signature($signature, $string);
+    
+        };
+            post '/split'=>sub {
+                my $c  = shift;
+                my $split = apart($c->req->json->{string}) || undef;
+                return $c->render(json=>{message=>"Parameter Invalid"}, status=>422)
+                    unless $split;
+                $c->session->{'returned_last'} = $split;
+                return $c->render(json=>{message=>$split}, status=>200);
+            };
+            post '/join'=>sub {
+                my $c  = shift;
+                my $odd =  $c->req->json->{odd};
+                my $even =  $c->req->json->{even};
+                return $c->render(json=>{message=>"Parameter required"}, status=>422)
+                    unless $odd && $even;
+                my $joined = together($odd, $even);
+                $c->session->{'returned_last'}=$joined;
+                return $c->render(json=>{message=>$joined}, status=>200);
+            };
+    
 };
-
 get '/lastResponse'=>sub {
     my $c = shift;
     my $last = $c->session->{'returned_last'};
     return $c->render(json=>{message=>$last}, status=>200);
 };
 
-post "/echo" => sub {
-  my $c = shift->openapi->valid_input or return;
-  my $data = {body => $c->validation->param("body")};
-  $c->render(openapi => $data);
-}, "echo";
+get '/'=>sub {
+    my $c = shift;
+    $c->res->headers->content_type('text/html');
+    $c->reply->asset(Mojo::Asset::File->new(path => './public/index.html'))
+};
+
+get '/org.css'=>sub {
+    my $c = shift;
+    $c->res->headers->content_type('text/css');
+    $c->reply->asset(Mojo::Asset::File->new(path => './public/org.css'));
+};
 
 sub run {
     app->secrets(['DeletedCodeIsDebuggedCode']);

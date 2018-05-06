@@ -5,10 +5,6 @@
 #+DATE: <2018-05-01 Tue>
 #+LANGUAGE: en
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./org.css"/>
-
-* Punchlist
-** TODO index page work
-
 * Description
 This application provides a basic authenticated  REST like service dividing strings into odd and
 even arrays and rejoining arrays into original strings.
@@ -84,20 +80,16 @@ curl -u USER:PASS http://matt-burns.shftbrd.com/lastResponse
 curl -u USER:PASS http://localhost/lastResponse
 #+END_SRC
 
-#+RESULTS:
-: message
-
 #+BEGIN_SRC sh
 curl -u USER:PASS https://localhost/lastResponse
 #+END_SRC
 
 
 #+BEGIN_SRC sh :results output  html
-prove -v -I/home/mburns/projects/bb/shiftboard/Audition-WebService/lib Audition-WebService/t/exported_test.t
+prove -v -I/../Together-Apart/lib t/acceptance.t
 #+END_SRC
 
 #+BEGIN_SRC sh
-Audition-WebService/t/exported_test.t ..
 # Subtest: business unit tests.
     1..3
     ok 1 - Odd and even combined into a single numberical sequence
@@ -137,7 +129,7 @@ run() unless caller();
 #+END_SRC
 * Configuration
 #+NAME: config
-#+BEGIN_SRC perl :noweb yes :mkdir yes :tangle Together-Apart/lib/Together/Apart.conf
+#+BEGIN_SRC perl :noweb yes :mkdir yes :tangle ../Together-Apart/lib/Together/Apart.conf
 {
  auth_url => 'https://interview-api.shiftboard.com/auth',
  name => 'together_apart',
@@ -145,70 +137,12 @@ run() unless caller();
  public=> "/home/mburns/projects/bb/shiftboard/docs",
 
  hypnotoad => {
-   pidfile="~/together-apart/script/hypnotoad.pid"
+   pidfile=>"~/together-apart/script/hypnotoad.pid",
    listen  => ['http://*:80', 'https://*:443?cert=/etc/server.crt&key=/etc/server.key'],
    workers => 10
   }
 }
 #+END_SRC
-* System Integration
-** SSL
-*** Lets Encrypt - certbot
-#+BEGIN_SRC
-$ sudo apt-get update
-$ sudo apt-get install software-properties-common
-$ sudo add-apt-repository ppa:certbot/certbot
-$ sudo apt-get update
-$ sudo apt-get install python-certbot-apache
-#+END_SRC**
-**  Systemd
-*** hypnotoad
-#+BEGIN_SRC ini :mkdir yes :tangle /etc/hypnotoad
-[Unit]
-Description=together-apart application
-Requires=network.target
-After=network.target
-
-[Service]
-Type=forking
-PIDFile=/home/ubuntu/together-apart/script/hypnotoad.pid
-ExecStart=/usr/bin/hypnotoad /home/ubuntu/together-apart/script/together_apart -f
-ExecStop=/usr/bin/hypnotoad -s  /home/ubuntu/together-apart/script/together_apart
-ExecReload=/usr/bin/hypnotoad /home/ubuntu/together-apart/script/together_apart
-KillMode=process
-
-[Install]
-WantedBy=multi-user.target
-#+END_SRC
-*** Reload systemctl daemon
-#+BEGIN_SRC sh
-sudo systemctl --system daemon-reload
-#+END_SRC
-*** rsyslog
-#+BEGIN_SRC ini :mkdir yes :tangle /etc/rsyslog.d/together_apart.conf
-if $programname == '* Packages
- #+BEGIN_SRC sh
-sudo apt-get install libmojolicious-perl  libdigest-sha-perl liblist-moreutils-perl libtry-tiny-perl
- #+END_SRC
-
-#+BEGIN_SRC :mkdir yes :tangle ../Together-Apart/dist.ini
-name    = Together-Apart
-         version = 0.01
-         author  = matthewburns@gmail
-         license = MIT
-         copyright_holder = Matt Burns
-
-[@Basic]
-
-[Prereqs]
-
-Mojolicious     = 7.77
-Digest::SHA      = 6.02
-List::MoreUtils  = 0.428
-
-[Control::Debian]
-#+END_SRC
-
 * Perl Dependencies
 #+NAME: dependencies
 #+BEGIN_SRC perl
@@ -247,11 +181,6 @@ dh-make-perl make  Together-Apart/Together-Apart-0.01
 
 #+BEGIN_SRC sh
 dpkg together-apart --pre-invoke test-features-absent --post-invoke test-features-present --status-fd ./current-status --build ../dist/
-#+END_SRC
-** logging/rotation
-** system user
-#+BEGIN_SRC sh  :dir /sudo::
-useradd lowly_ws
 #+END_SRC
 ** Reverse Proxy Server
 In front of app acting as the endpoint accessible by external clients.
@@ -362,7 +291,7 @@ get '/lastResponse'=>sub {
 #+NAME: api-basic-authentication
 #+BEGIN_SRC perl :noweb yes
 sub check_credentials {
-    my $c = shift; return 1;
+    my $c = shift;
     my ($username, $password) = split(':',  $c->req->url->to_abs->userinfo)
         if $c->req->url->to_abs->userinfo;
     $c->ua->get(Mojo::URL->new($ENV{"auth_url"} || app->config('auth_url'))
@@ -376,7 +305,7 @@ sub check_signature {
     my ($signature, $string) = @_;
     $signature && $string && ($signature eq sha1($string))
         ? return 1
-        : return 1;
+        : return 0;
 }
 
 under(sub {my $c = shift; # Basic Authentication for each request
@@ -443,9 +372,9 @@ subtest 'testing registered authentication' => sub {
  #+END_SRC
 ** Application Code
  #+NAME: app-biz-domain-functionality
- #+BEGIN_SRC perl :noweb yes :mkdir yes :tangle Audition-WebService/lib/Audition/WebService.pm
+ #+BEGIN_SRC perl :noweb yes :mkdir yes :tangle ../Together-Apart/lib/Together/Apart.pm
+#ABSTRACT: split join api endpoints
 <<dependencies>>
-plugin 'Config';
 
 <<split-functionality>>
 <<join-functionality>>
@@ -457,21 +386,16 @@ group {
 };
 <<api-f3>>
 
-get '/docs' => sub {
-  my $c = shift;
-  $c->res->headers->content_type('text/html');
-  $c->reply->asset(Mojo::Asset::File->new(path => '/home/mburns/projects/bb/shiftboard/Audition-WebService/public/index.html'));
-};
-
-get '/index'=>sub {
+get '/'=>sub {
     my $c = shift;
-    $c->reply->static('index.html');
+    $c->res->headers->content_type('text/html');
+    $c->reply->asset(Mojo::Asset::File->new(path => './public/index.html'))
 };
 
 get '/org.css'=>sub {
     my $c = shift;
     $c->res->headers->content_type('text/css');
-    $c->reply->asset(Mojo::Asset::File->new(path => '/home/mburns/projects/bb/shiftboard/Together-Apart/public/org.css'));
+    $c->reply->asset(Mojo::Asset::File->new(path => './public/org.css'));
 };
 
 <<run-unless-caller>>
@@ -482,14 +406,14 @@ prove -v -I./lib t/acceptance.t
 #+END_SRC
 
 #+NAME: app-test-suite
-#+BEGIN_SRC perl :noweb yes  :mkdirp yes :tangle Audition-WebService/t/acceptance.t
+#+BEGIN_SRC perl :noweb yes  :mkdirp yes :tangle ../Together-Apart/t/acceptance.t
 use Digest::SHA  qw(sha1);
 use Mojo::JSON qw(decode_json encode_json);
 use Test::Mojo;
 use Test::MockModule;
 use Test::More;
 use FindBin;
-require "$FindBin::Bin/../lib";
+use lib "../lib";
 
 use Together::Apart;
 
@@ -546,10 +470,70 @@ subtest 'API usage mocking registered auth. see F1, F2, F3, G0, G1, G2, G3, G4, 
 done_testing();
 1;
 
-__END__
-
 #+END_SRC
-* Appendix A: Project  Overview
+* System Integration
+** SSL
+*** Lets Encrypt - certbot
+#+BEGIN_SRC sh
+$ sudo apt-get update
+$ sudo apt-get install software-properties-common
+$ sudo add-apt-repository ppa:certbot/certbot
+$ sudo apt-get update
+$ sudo apt-get install python-certbot-apache
+#+END_SRC
+**  Systemd
+*** hypnotoad
+#+BEGIN_SRC sh
+[Unit]
+Description=together-apart application
+Requires=network.target
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/home/ubuntu/together-apart/script/hypnotoad.pid
+ExecStart=/usr/bin/hypnotoad /home/ubuntu/together-apart/script/together_apart -f
+ExecStop=/usr/bin/hypnotoad -s  /home/ubuntu/together-apart/script/together_apart
+ExecReload=/usr/bin/hypnotoad /home/ubuntu/together-apart/script/together_apart
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+#+END_SRC
+
+#+RESULTS:
+
+*** Reload systemctl daemon
+#+BEGIN_SRC sh :dir /sudo::
+sudo systemctl --system daemon-reload
+#+END_SRC
+*** rsyslog
+#+BEGIN_SRC ini :dir /sudo:: :mkdir yes /etc/rsyslog.d/together_apart.conf
+if $programname == '* Packages
+#+END_SRC
+
+ #+BEGIN_SRC sh
+sudo apt-get install libmojolicious-perl  libdigest-sha-perl liblist-moreutils-perl libtry-tiny-perl
+ #+END_SRC
+
+#+BEGIN_SRC :mkdir yes :tangle ../Together-Apart/dist.ini
+name    = Together-Apart
+         version = 0.01
+         author  = matthewburns@gmail
+         license = MIT
+         copyright_holder = Matt Burns
+
+[@Basic]
+
+[Prereqs]
+
+Mojolicious     = 7.77
+Digest::SHA      = 6.02
+List::MoreUtils  = 0.428
+
+[Control::Debian]
+#+END_SRC
+* Appendix A: TODO
 org-mode to document and automate microservice development,  operational and maintainence tasks.
 API provides access to the app code block creating devop playbooks.
 
@@ -592,7 +576,7 @@ push system based on ssh and public/private key access.
   - Github hooks to deploy
 * Appendix C: REPL /Debugger
 #+BEGIN_SRC sh
-perl -d -I/home/mburns/projects/bb/shiftboard/Audition-WebService/lib  Audition-WebService/lib/Audition/WebService.pm daemon
+perl -d -I../lib  Together-Apart/lib/Together/Apart.pm daemon
 #+END_SRC
 ** Testing G7 - Setting up non sticky environment
 #+BEGIN_SRC perl

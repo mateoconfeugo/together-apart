@@ -3,12 +3,10 @@ use Mojo::JSON qw(decode_json encode_json);
 use Test::Mojo;
 use Test::MockModule;
 use Test::More;
-
 use FindBin;
-#require "$FindBin::Bin/../lib";
-use lib "/home/mburns/projects/bb/shiftboard/Together-Apart/lib";
-use Together::Apart;
+use lib "../lib";
 
+use Together::Apart;
 
 my $desired_together = "split me";
 my $desired_apart = {'odd'  => ['s', 'l', 't', 'm'],'even'=>['p', 'i', ' ', 'e'] };
@@ -62,5 +60,3 @@ subtest 'API usage mocking registered auth. see F1, F2, F3, G0, G1, G2, G3, G4, 
 
 done_testing();
 1;
-
-__END__
