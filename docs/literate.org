@@ -4,13 +4,12 @@
 #+EMAIL: matthewburns@gmail.com
 #+DATE: <2018-05-01 Tue>
 #+LANGUAGE: en
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://thomasf.github.io/solarized-css/solarized-light.min.css" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./org.css"/>
+
 * Description
 This application provides a basic authenticated  REST like service dividing strings into odd and
 even arrays and rejoining arrays into original strings.
-* Application specification
-[[file:///home/mburns/Downloads/backend_coding_exercise.pdf][Coding Exercise Specification]]
+* [[file:///home/mburns/Downloads/backend_coding_exercise.pdf][Application Specification]]
 **  General Requirements
 | Spec ID | Description                                                                             |
 |---------+-----------------------------------------------------------------------------------------|
@@ -30,6 +29,66 @@ even arrays and rejoining arrays into original strings.
 | F3      | Last result depending on method called last                                                     |
 
 * Acceptance Criteria
+#+BEGIN_SRC sh :results output raw
+:curl -X POST -u USER:PASS \
+http://matt-burns.shftbrd.com/split?signature=04e74f3b8cfcf0b502ff701a9b5f0b98ece0d3b4 \
+-d '{"string":"split me"}'
+#+END_SRC
+
+#+BEGIN_SRC sh :results output raw
+curl -X POST -u USER:PASS \
+http://localhost/split?signature=04e74f3b8cfcf0b502ff701a9b5f0b98ece0d3b4 \
+-d '{"string":"split me"}'
+#+END_SRC
+
+#+RESULTS:
+{"message":{"odd":["s","l","t","m"],"even":["p","i"," ","e"]}}
+
+#+BEGIN_SRC sh :results output raw
+curl -X POST -u USER:PASS \
+https://localhost/split?signature=04e74f3b8cfcf0b502ff701a9b5f0b98ece0d3b4 \
+-d '{"string":"split me"}'
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC sh
+curl -X POST -u USER:PASS \
+http://matt-burns.shftbrd.com/join?signature=6edd74450aa9206c4ba0b8c009de382a3e91f404 \
+-d '{"odd":["s","l","t","m"], "even":["p","i"," ","e"]}'
+#+END_SRC
+
+#+BEGIN_SRC sh :results output raw
+curl -X POST -u USER:PASS \
+http://localhost/join?signature=6edd74450aa9206c4ba0b8c009de382a3e91f404 \
+-d '{"odd":["s","l","t","m"], "even":["p","i"," ","e"]}'
+#+END_SRC
+
+#+RESULTS:
+{"message":"split me"}
+
+#+BEGIN_SRC sh
+curl -X POST -u USER:PASS \
+https://localhost:join?signature=6edd74450aa9206c4ba0b8c009de382a3e91f404 \
+-d '{"odd":["s","l","t","m"], "even":["p","i"," ","e"]}'
+#+END_SRC
+
+#+BEGIN_SRC sh
+curl -u USER:PASS http://matt-burns.shftbrd.com/lastResponse
+#+END_SRC
+
+#+BEGIN_SRC sh
+curl -u USER:PASS http://localhost/lastResponse
+#+END_SRC
+
+#+RESULTS:
+: message
+
+#+BEGIN_SRC sh
+curl -u USER:PASS https://localhost/lastResponse
+#+END_SRC
+
+
 #+BEGIN_SRC sh :results output  html
 prove -v -I/home/mburns/projects/bb/shiftboard/Audition-WebService/lib Audition-WebService/t/exported_test.t
 #+END_SRC
@@ -260,11 +319,27 @@ export partition_combiner_auth_url='https://interview-api.shiftboard.com/auth';
 export partition_combiner_register_url='https://interview-api.shiftboard.com/register';
 export MOJO_REVERSE_PROXY='http://localhost:80';
  #+END_SRC
-
+* Packages
  #+BEGIN_SRC sh
 sudo apt-get install libmojolicious-perl  libdigest-sha-perl liblist-moreutils-perl libtry-tiny-perl
  #+END_SRC
+
+#+BEGIN_SRC :mkdir yes :tangle ../Together-Apart/dist.ini
+name    = Together-Apart
+         version = 0.01
+         author  = matthewburns@gmail
+         license = MIT
+         copyright_holder = Matt Burns
+
+         [@Basic]
+
+         [Prereqs]
+         Mojolicious     = 7.77
+#+END_SRC
+
 * Perl Dependencies
+
+
 #+NAME: dependencies
 #+BEGIN_SRC perl
 use strict;
@@ -317,18 +392,14 @@ subtest 'testing api app biz domain functionality' => sub {
     <<api-tests>>
 };
 #+END_SRC
-* Provision
-** Platform Runtime Orchestration
-*** Common Scenarios
-**** Typical Release
-**** Rollback
+* Runtime
+** Common Scenarios
+**** New Version
+**** Rollback to previous
 **** Cherry Pick
 **** Hot Fix
-** Packages
- #+BEGIN_SRC sh
-sudo apt-get install libmojolicious-perl  libdigest-sha-perl liblist-moreutils-perl libtry-tiny-perl
- #+END_SRC
 
+**** Try previously rolledback
 * Release
 **  Push
 #+BEGIN_SRC sh
@@ -352,10 +423,11 @@ dpkg together-apart --pre-invoke test-features-absent --post-invoke test-feature
 #+END_SRC
 
 #+RESULTS:
-
-
 ** logging/rotation
 ** system user
+#+BEGIN_SRC sh :dir ::sudo
+useradd lowly_ws
+#+END_SRC
 ** groups
 ** var/data
 ** auditing
@@ -385,25 +457,6 @@ Target for github app repo release hook trigger post. Existing running version o
 sets up and restarts public facing webserver proxying with updated symbolic links for
 the site-availabe and sites-enabled point to the next blue green service pair in the the versioned
 deployment release chain.
-** Nginx
-#+BEGIN_SRC config
-upstream together_apart {
-  server 127.0.0.1:3000;
-}
-server {
-  listen 80;
-  server_name localhost;
-  location / {
-    proxy_pass http://together_apart;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection "upgrade";
-    proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
-  }
-}
-#+END_SRC
 ** restart
 #+BEGIN_SRC sh
 hypnotoad ./script/together_apart
@@ -421,70 +474,50 @@ hypnotoad ./script/together_apart
 #+BEGIN_SRC sh
 kill -s TERM `cat /tmp/first.pid`
 #+END_SRC
-* Appendix A: Literate DevOps Document Overview
-Applying to dev ops task, using org-mode in emacs to facilate  Knuth outlined ideas of literate programming
-capture and automate the operationation tasks of of developing and maintaining a microservice.
+* Appendix A: Project  Overview
+org-mode to document and automate microservice development,  operational and maintainence tasks.
+API provides access to the app code block creating devop playbooks.
 
-This means using the code blocks feature of of org mode to weave together, often as a first draft,
-the tasks of setting up these types of programs.  Then having a nice way to make it pretty.
+Application update endpoint targeted by github repo webhooks triggered merge into master,
+creates continous delivery feedback loop used deploying new version, handing off
+the request handling of the service to the new version.
 
-The tangle untangle feature are helpful for publishing out code especially during the start of a project
-as its easy to make drastic namespace refactor org things; however, as the project matures less of the the
-devops usefulness comes from anything relating to the autocode publishing which usually ceases pretty quick.
-
-Restful projects are nice because it creates a nice method to access the application directly from the the
-document providing a redumentary but powerful user interface.
-
-Providing a couple of simple devop endpoints into the application and continous delivery loop comes
-about as the feedback resulting from connecting the github repo webhooks triggered by a merge request into master
-to a deployment of the new version and subsequent hand off of the service to the new version.
-
-Adding a couple of flourishes using packages and socket reuse make the software development process easier and without
-the need of heavy environments once the system is running in production.
-
+Debian packages and socket reuse make upgrade to new version while system is running in production.
+push system based on ssh and public/private key access.
 ** Goals
-*** eliminate common technical debt (versioning, release, deploy, documentation, test)
+*** manage technical debt (versioning, release, deploy, documentation, test)
 *** automatically maintain and update
 *** make it easy to run/work on the software
 Dev projects like any other open source github project fork
 package correctly for debian and incorporate into systemd management
 *** checklists to help foster better development security practices
-Harvest low hanging fruit that yeilds nice to have features while in development
- - forensic system analysis via instant replay using atop archive fils + auditd + log files + application virtualized containerization
- - providing a swagger api that allows dev ops tasks to be easily scripted via your favorite language as a client
-   creates a feedback path which makes what you can do directly from the devops docs directly or run as a script by
-   running emacs as a dynamic language from called from a shell script.  This active documentation is a playbook - an automated one.
- - Use a push system based on ssh and public/private key access.
-** Features incorporated into the document  [12/20]
+** Design Features [19/21]
  - [X] Publishes code into source files
- - [-] Releases the code into the upstream code repository
+ - [X] Releases the code into the upstream code repository
  - [-] Deploys the code onto the desired runtime platorm (dev, qa, stg, prd)
  - [X] Provisions the runtime infrastructure and like artifacts the application is dependent upon.
  - [X] Capture the functional requirements in automated testable form
- - [-] Understand engineering decisions behind the implementation, design, methodology testing
+ - [X] Understand engineering decisions behind the implementation, design, methodology testing
  - [X] Define the way features are deployed into new versions of this WebService
  - [X] Run tests
  - [X] Provides application documentation
- - [-] Provide development history
+ - [X] Provide development history
  - [X] Provides a reduamentry cli interface to devops/maintence tasks
  - [X] Sets up and runs system from src control repo (github)
  - [X] Provide  way to refer and collaborate among developers
- - [-] Continous Delivery with rollback
+ - [X] Continous Delivery
+ - [-] Rollback
  - [X] Worksheet to aid in project management aspects of software development
  - [X] Bridge that first draft proof of concept devops task into part of the crm/orchestration process
  - [X] Allows the stitching together of many pre- [-]existing tools (git, dpkg,
- - [-] Incorporate others work via pull requests in a timely fashion
- - [-] Define Idioms
- - [-] Capture domain specific paculiarities
+ - [X] Incorporate others work via pull requests.
+ - [X] Define Idioms
+ - [X] Capture domain specific paculiarities
 * Appendix B: System 3rd Party Dependencies/Requirements
   - Local: Running in the context of a ordinary linux system account
-  - A single VPC, with the usual 3 security group setup - internal, web, and bastion.
-  - [[https://www.terraform.io][Terraform]] and for provisioning infrastructure.
-  - [[https://www.packer.io][Packer]] to build a single general-purpose base AMI.
   - API web application
   - Common library components
   - Github hooks to deploy
-  - Riemann monitoring integration.
 * Appendix C: REPL /Debugger
 #+BEGIN_SRC sh
 perl -d -I/home/mburns/projects/bb/shiftboard/Audition-WebService/lib  Audition-WebService/lib/Audition/WebService.pm daemon

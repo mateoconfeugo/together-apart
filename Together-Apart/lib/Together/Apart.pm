@@ -1,18 +1,21 @@
+#ABSTRACT:  Basic authenticated REST service dividing strings into odd and even arrays and rejoining arrays into original strings
 use strict;
 use warnings;
 
-package Audition::WebService;
+package Together::Apart;
+
 use Digest::SHA qw(sha1);
 use List::MoreUtils qw(zip);
 use Mojo::Asset::File;
 use Mojolicious::Lite;
+use Mojo::Base "Mojolicious";
 use Mojolicious::Static;
 use Mojo::URL;
 
 plugin 'Config';
 
 sub together {
-    my ($odd, $even) = @_;
+T    my ($odd, $even) = @_;
     return undef
         unless $odd && $even;
     return undef
@@ -92,22 +95,19 @@ get '/lastResponse'=>sub {
 };
 
 get '/docs' => sub {
-  my $c = shift;
-  $c->res->headers->content_type('text/html');
-  $c->reply->asset(Mojo::Asset::File->new(path => '/home/mburns/projects/bb/shiftboard/Audition-WebService/public/index.html'));
-};
-
-get '/index'=>sub {
-    my $c = shift;
-    $c->reply->static('index.html');
 };
 
 get '/org.css'=>sub {
     my $c = shift;
     $c->res->headers->content_type('text/css');
-    $c->reply->asset(Mojo::Asset::File->new(path => '/home/mburns/projects/bb/shiftboard/Audition-WebService/public/org.css'));
+    $c->reply->asset(Mojo::Asset::File->new(path => '/home/mburns/projects/bb/shiftboard/Together-Apart/public/org.css'));
 };
 
+post "/echo" => sub {
+  my $c = shift->openapi->valid_input or return;
+  my $data = {body => $c->validation->param("body")};
+  $c->render(openapi => $data);
+}, "echo";
 
 sub run {
     app->secrets(['DeletedCodeIsDebuggedCode']);
